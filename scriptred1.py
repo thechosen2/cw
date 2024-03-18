@@ -244,34 +244,48 @@ def findEnemyAtIsalnd(x_c,y_c,pirate):
 
 
 def ActPirate(pirate):
-    x, y = pirate.getPosition()
-    if pirate.getCurrentFrame()==1:
-        pirate.setTeamSignal(f'{x},{y}')
+    x_self, y_self = pirate.getPosition()
+    # if pirate.getCurrentFrame()==1:
+    #     pirate.setTeamSignal(f'{x},{y}')
+
     id = pirate.getID()
     try:
         id = int(id)+1
     except:
         id = 1
 
-    id = id%40
+    # id = id%40
     # print(sig)
     # if sig == "reached":
-    if pirate.getCurrentFrame()>200:
-        if getIslandCenter(pirate):
+    if getIslandCenter(pirate):
              x_c , y_c,island_num = getIslandCenter(pirate)
              l = pirate.trackPlayers()
-             if l[island_num - 1] != 'myCaptured':
-                pirate.setTeamSignal(f'{island_num},{x_c},{y_c}')
-        else:
-             spread(pirate)
+             s = pirate.getTeamSignal()
+             t = s.split(",")
+            #  print(s)
+            #  print((island_num-1)*2+1)
+             if t[(island_num-1) * 2] == "" and t[(island_num-1) * 2 + 1] == "":
+                    if(island_num == 1):
+                        st = str(x_c) + "," + str(y_c) + "," + t[2] + "," + t[3] + "," + t[4] + "," + t[5] 
+                        pirate.setTeamSignal(st)
+                    elif island_num == 2:
+                        st = t[0] + "," + t[1] + "," + str(x_c) + "," + str(y_c) + "," + t[4] + "," + t[5]
+                        pirate.setTeamSignal(st)
+                    elif island_num == 3:
+                         st = t[0] + "," + t[1] + "," + t[2] + "," + t[3] + "," + str(x_c) + "," + str(y_c)
+                         pirate.setTeamSignal(st)
+    else:
+        spread(pirate)
+    if pirate.getCurrentFrame()>200:
         
-                
-        if pirate.getTeamSignal() != "":
+        
+        l = pirate.trackPlayers()
+        if l[0] != 'myCaptured' and l[1]=='myCaptured' and l[2]=='myCaptured':
             s = pirate.getTeamSignal()
-            l = s.split(",")
+            t = s.split(",")
             try:
-                x = int(l[1])
-                y = int(l[2])
+                x = int(t[0])
+                y = int(t[1])
                 #i call this part the mating ritual
                 coord_list = [(2,-2),(1,-2),(0,-2),(-1,-2),(-2,-2),(2,-1),(1,-1),(0,-1),(-1,-1),(-2,-1),(2,0),(1,0),(0,0),(-1,0),(-2,0),(2,1),(1,1),(0,1),(-1,1),(-2,1),(2,2),(1,2),(0,2),(-1,2),(-2,2)]
                 outerMappingList = [1,2,3,4,5,10,15,20,25,24,23,22,21,16,11,6]
@@ -287,19 +301,178 @@ def ActPirate(pirate):
                 return moveTo(x+movex,y+movey,pirate)
             except:
                 return spread(pirate)
-
+        elif l[0] == 'myCaptured' and l[1]!='myCaptured' and l[2]=='myCaptured':
+            s = pirate.getTeamSignal()
+            t = s.split(",")
+            try:
+                x = int(t[2])
+                y = int(t[3])
+                #i call this part the mating ritual
+                coord_list = [(2,-2),(1,-2),(0,-2),(-1,-2),(-2,-2),(2,-1),(1,-1),(0,-1),(-1,-1),(-2,-1),(2,0),(1,0),(0,0),(-1,0),(-2,0),(2,1),(1,1),(0,1),(-1,1),(-2,1),(2,2),(1,2),(0,2),(-1,2),(-2,2)]
+                outerMappingList = [1,2,3,4,5,10,15,20,25,24,23,22,21,16,11,6]
+                innerMappingList = [7,12,17,18,19,14,9,8]
+                id = int(pirate.getID())
+                if (id-1)%25  in outerMappingList:
+                    movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
+                elif (id-1)%25 in innerMappingList:
+                     movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%9]-1]
+                else:
+                     movex, movey = coord_list[(id)%25]
+                     movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
+                return moveTo(x+movex,y+movey,pirate)
+            except:
+                return spread(pirate)
+        elif l[0] == 'myCaptured' and l[1]=='myCaptured' and l[2]!='myCaptured':
+            s = pirate.getTeamSignal()
+            t = s.split(",")
+            try:
+                x = int(t[4])
+                y = int(t[5])
+                #i call this part the mating ritual
+                coord_list = [(2,-2),(1,-2),(0,-2),(-1,-2),(-2,-2),(2,-1),(1,-1),(0,-1),(-1,-1),(-2,-1),(2,0),(1,0),(0,0),(-1,0),(-2,0),(2,1),(1,1),(0,1),(-1,1),(-2,1),(2,2),(1,2),(0,2),(-1,2),(-2,2)]
+                outerMappingList = [1,2,3,4,5,10,15,20,25,24,23,22,21,16,11,6]
+                innerMappingList = [7,12,17,18,19,14,9,8]
+                id = int(pirate.getID())
+                if (id-1)%25  in outerMappingList:
+                    movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
+                elif (id-1)%25 in innerMappingList:
+                     movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%9]-1]
+                else:
+                     movex, movey = coord_list[(id)%25]
+                     movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
+                return moveTo(x+movex,y+movey,pirate)
+            except:
+                return spread(pirate)
+        elif l[0] == 'myCaptured' and l[1]!='myCaptured' and l[2]!='myCaptured':
+            s = pirate.getTeamSignal()
+            t = s.split(",")
+            try:
+                x2 = int(t[2])
+                y2 = int(t[3])
+                x3 = int(t[4])
+                y3 = int(t[5])
+                #i call this part the mating ritual
+                coord_list = [(2,-2),(1,-2),(0,-2),(-1,-2),(-2,-2),(2,-1),(1,-1),(0,-1),(-1,-1),(-2,-1),(2,0),(1,0),(0,0),(-1,0),(-2,0),(2,1),(1,1),(0,1),(-1,1),(-2,1),(2,2),(1,2),(0,2),(-1,2),(-2,2)]
+                outerMappingList = [1,2,3,4,5,10,15,20,25,24,23,22,21,16,11,6]
+                innerMappingList = [7,12,17,18,19,14,9,8]
+                id = int(pirate.getID())
+                if (id-1)%25  in outerMappingList:
+                    movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
+                elif (id-1)%25 in innerMappingList:
+                     movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%9]-1]
+                else:
+                     movex, movey = coord_list[(id)%25]
+                     movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
+                mdis2 = abs(x2 + movex - x_self) + abs(y2 + movey - y_self)
+                mdis3 = abs(x3 + movex - x_self) + abs(y3 + movey - y_self)
+                if(mdis2 < mdis3):
+                     return moveTo(x2 + movex, y2 + movey, pirate)
+                else:
+                     return moveTo(x3 + movex, y3 + movey, pirate)
+            except:
+                return spread(pirate)
+        elif l[0] != 'myCaptured' and l[1]!='myCaptured' and l[2]=='myCaptured':
+            s = pirate.getTeamSignal()
+            t = s.split(",")
+            try:
+                x1 = int(t[0])
+                y1 = int(t[1])
+                x2 = int(t[2])
+                y2 = int(t[3])
+                #i call this part the mating ritual
+                coord_list = [(2,-2),(1,-2),(0,-2),(-1,-2),(-2,-2),(2,-1),(1,-1),(0,-1),(-1,-1),(-2,-1),(2,0),(1,0),(0,0),(-1,0),(-2,0),(2,1),(1,1),(0,1),(-1,1),(-2,1),(2,2),(1,2),(0,2),(-1,2),(-2,2)]
+                outerMappingList = [1,2,3,4,5,10,15,20,25,24,23,22,21,16,11,6]
+                innerMappingList = [7,12,17,18,19,14,9,8]
+                id = int(pirate.getID())
+                if (id-1)%25  in outerMappingList:
+                    movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
+                elif (id-1)%25 in innerMappingList:
+                     movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%9]-1]
+                else:
+                     movex, movey = coord_list[(id)%25]
+                     movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
+                mdis2 = abs(x2 + movex - x_self) + abs(y2 + movey - y_self)
+                mdis1 = abs(x1 + movex - x_self) + abs(y1 + movey - y_self)
+                if(mdis2 < mdis1):
+                     return moveTo(x2 + movex, y2 + movey, pirate)
+                else:
+                     return moveTo(x1 + movex, y1 + movey, pirate)
+            except:
+                return spread(pirate)
+        elif l[0] != 'myCaptured' and l[1]=='myCaptured' and l[2]!='myCaptured':
+            s = pirate.getTeamSignal()
+            t = s.split(",")
+            try:
+                x1 = int(t[0])
+                y1 = int(t[1])
+                x3 = int(t[4])
+                y3 = int(t[5])
+                #i call this part the mating ritual
+                coord_list = [(2,-2),(1,-2),(0,-2),(-1,-2),(-2,-2),(2,-1),(1,-1),(0,-1),(-1,-1),(-2,-1),(2,0),(1,0),(0,0),(-1,0),(-2,0),(2,1),(1,1),(0,1),(-1,1),(-2,1),(2,2),(1,2),(0,2),(-1,2),(-2,2)]
+                outerMappingList = [1,2,3,4,5,10,15,20,25,24,23,22,21,16,11,6]
+                innerMappingList = [7,12,17,18,19,14,9,8]
+                id = int(pirate.getID())
+                if (id-1)%25  in outerMappingList:
+                    movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
+                elif (id-1)%25 in innerMappingList:
+                     movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%9]-1]
+                else:
+                     movex, movey = coord_list[(id)%25]
+                     movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
+                mdis1 = abs(x1 + movex - x_self) + abs(y1 + movey - y_self)
+                mdis3 = abs(x3 + movex - x_self) + abs(y3 + movey - y_self)
+                if(mdis1 < mdis3):
+                     return moveTo(x1 + movex, y1 + movey, pirate)
+                else:
+                     return moveTo(x3 + movex, y3 + movey, pirate)
+            except:
+                return spread(pirate)
+        elif l[0] != 'myCaptured' and l[1]!='myCaptured' and l[2]!='myCaptured':
+            s = pirate.getTeamSignal()
+            t = s.split(",")
+            try:
+                x1 = int(t[0])
+                y1 = int(t[1])
+                x2 = int(t[2])
+                y2 = int(t[3])
+                x3 = int(t[4])
+                y3 = int(t[5])
+                #i call this part the mating ritual
+                coord_list = [(2,-2),(1,-2),(0,-2),(-1,-2),(-2,-2),(2,-1),(1,-1),(0,-1),(-1,-1),(-2,-1),(2,0),(1,0),(0,0),(-1,0),(-2,0),(2,1),(1,1),(0,1),(-1,1),(-2,1),(2,2),(1,2),(0,2),(-1,2),(-2,2)]
+                outerMappingList = [1,2,3,4,5,10,15,20,25,24,23,22,21,16,11,6]
+                innerMappingList = [7,12,17,18,19,14,9,8]
+                id = int(pirate.getID())
+                if (id-1)%25  in outerMappingList:
+                    movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
+                elif (id-1)%25 in innerMappingList:
+                     movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%9]-1]
+                else:
+                     movex, movey = coord_list[(id)%25]
+                     movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
+                mdis1 = abs(x1 + movex - x_self) + abs(y1 + movey - y_self)
+                mdis2 = abs(x2 + movex - x_self) + abs(y2 + movey - y_self)
+                mdis3 = abs(x3 + movex - x_self) + abs(y3 + movey - y_self)
+                if(mdis2 < mdis3 and mdis2 < mdis1):
+                     return moveTo(x2 + movex, y2 + movey, pirate)
+                elif (mdis1 < mdis3 and mdis1 < mdis2):
+                     return moveTo(x1 + movex, y1 + movey, pirate)
+                else:
+                     return moveTo(x3 + movex, y3 + movey, pirate)
+            except:
+                return spread(pirate)
         else:
             return spread(pirate)
     else:
         
         # a= pirate.getID()
-        a = (int(pirate.getID())-1)%40
-        if a>8:
+        id = (int(pirate.getID())-1)
+        a=id%40
+        if a%40>40:
             sig = pirate.getTeamSignal()
             try:
                 sig_list = sig.split(',')
-                a_spawn = int(sig_list[0])
-                b_spawn = int(sig_list[1])
+                a_spawn = pirate.getDeployPoint()[0]
+                b_spawn = pirate.getDeployPoint()[1]
             except:
                 a_spawn, b_spawn = (40-1,0)
             width = 40-1
@@ -329,9 +502,7 @@ def ActPirate(pirate):
         else:
             # print('Reached here')
             #The initial 8 ships will move according to this
-            sig = pirate.getTeamSignal()
             try:
-                sig_list = sig.split(',')
                 a_spawn = pirate.getDeployPoint()[0]
                 b_spawn = pirate.getDeployPoint()[1]
             except:
@@ -344,7 +515,7 @@ def ActPirate(pirate):
             except:
                 counter = 0
             # print(f'y_self = {y_self} x_self = {x_self} a+counter = {a + counter}')
-            if counter%2 == 0:
+            if counter%2 == 0 and id<8:
                 if a_spawn == 0 and b_spawn == 0:
                     if y_self == a+counter and x_self != width:
                         return moveTo(width, y_self, pirate)
@@ -365,7 +536,8 @@ def ActPirate(pirate):
                         return moveTo(0, y_self, pirate)
                     elif y_self != height-a+counter and x_self !=0:
                         return moveTo(x_self, height-a+counter, pirate)
-            else:
+                    
+            elif counter%2!=0 and id<8:
                 if a_spawn == 0 and b_spawn == 0:
                     if y_self == a+counter and x_self != 0:
                         return moveTo(0, y_self, pirate)
@@ -386,6 +558,49 @@ def ActPirate(pirate):
                         return moveTo(width, y_self, pirate)
                     elif y_self != height-a+counter and x_self !=width:
                         return moveTo(x_self, height-a+counter, pirate)
+            
+            elif counter%2 == 0 and id>=8:
+                if a_spawn == 0 and b_spawn == 0:
+                    if y_self == a and x_self != width:
+                        return moveTo(width, y_self, pirate)
+                    elif y_self != a and x_self !=width :
+                        return moveTo(x_self, a, pirate)
+                if a_spawn == width and b_spawn == 0:
+                    if y_self == a and x_self != 0:
+                        return moveTo(0, y_self, pirate)
+                    elif y_self != a and x_self !=0 :
+                        return moveTo(x_self, a,pirate)
+                if a_spawn == 0 and b_spawn == height:
+                    if y_self == height-a and x_self != width:
+                        return moveTo(width, y_self, pirate)
+                    elif y_self != height-a and x_self !=width :
+                        return moveTo(x_self, height-a, pirate)
+                if a_spawn == width and b_spawn == height:
+                    if y_self == height-a and x_self != 0:
+                        return moveTo(0, y_self, pirate)
+                    elif y_self != height-a and x_self !=0:
+                        return moveTo(x_self, height-a, pirate)
+            elif counter%2 != 0 and id>=8:
+                if a_spawn == 0 and b_spawn == 0:
+                    if y_self == a and x_self != 0:
+                        return moveTo(0, y_self, pirate)
+                    elif y_self != a and x_self !=0 :
+                        return moveTo(x_self, a, pirate)
+                if a_spawn == width and b_spawn == 0:
+                    if y_self == a and x_self != width:
+                        return moveTo(width, y_self, pirate)
+                    elif y_self != a and x_self !=width :
+                        return moveTo(x_self, a,pirate)
+                if a_spawn == 0 and b_spawn == height:
+                    if y_self == height-a and x_self != 0:
+                        return moveTo(0, y_self, pirate)
+                    elif y_self != height-a and x_self !=0 :
+                        return moveTo(x_self, height-a, pirate)
+                if a_spawn == width and b_spawn == height:
+                    if y_self == height-a and x_self != width:
+                        return moveTo(width, y_self, pirate)
+                    elif y_self != height-a and x_self !=width:
+                        return moveTo(x_self, height-a, pirate)
 
                 
             #Check if one route is over
@@ -395,25 +610,39 @@ def ActPirate(pirate):
             # print(f'Counter = {counter}')
             if counter%2==0:
                 # print('Even')
-                if y==a + counter and x == abs(width - a_spawn):
-                    # print('Fired')
-                    counter +=1
-                    pirate.setSignal(str(counter))
-                    return moveTo(abs(width-a_spawn)+1,a+counter+1,pirate)
+                if id <8:
+                    if y_self==a + counter and x_self == abs(width - a_spawn):
+                        # print('Fired')
+                        counter +=1
+                        pirate.setSignal(str(counter))
+                        return moveTo(abs(width-a_spawn)+1,a+counter+1,pirate)
+                else:
+                    if y_self == a and x_self == abs(width-a_spawn):
+                         counter+=1
+                         pirate.setSignal(str(counter))
+                         return moveTo(abs(width-a_spawn)+1,a,pirate)
             else:
                 # print('Odd')
-                if y==a + counter and x ==a_spawn:
-                    # print('Fired')
-                    counter +=1
-                    pirate.setSignal(str(counter))
-                    return moveTo(a_spawn-1,a+counter+1,pirate)      
+                if id<8:
+                    if y_self==a + counter and x_self ==a_spawn:
+                        # print('Fired')
+                        counter +=1
+                        pirate.setSignal(str(counter))
+                        return moveTo(a_spawn-1,a+counter+1,pirate)
+                else:
+                    if y_self == a and x_self == a_spawn:
+                         counter+=1
+                         pirate.setSignal(str(counter))
+                         return moveTo((a_spawn)-1,a,pirate)
+                           
 
 
 
 
 def ActTeam(team):
 
-    # print(team.getCurrentFrame()) 
+    if team.getCurrentFrame() == 1:
+         team.setTeamSignal(',,,,,')
     l = team.trackPlayers()
     s = team.getTeamSignal()
     s1 = s.split(',')
@@ -422,14 +651,15 @@ def ActTeam(team):
         team.buildWalls(1)
         team.buildWalls(2)
         team.buildWalls(3)
+    print(team.getCurrentFrame())
+    # if s:
 
-    if s:
-
-        island_no = int(s1[0])
-        # print(island_no)
-        try:
-            signal = l[island_no - 1]
-            if signal == "myCaptured":
-                team.setTeamSignal("")
-        except:
-             pass
+    #     # island_no = int(s1[0])
+    #     # print(island_no)
+    #     try:
+    #         signal = l[island_no - 1]
+    #         if signal == "myCaptured":
+    #             # team.setTeamSignal("")
+    #              pass
+    #     except:
+            #  pass
