@@ -273,8 +273,16 @@ def ActPirate(pirate):
                 x = int(l[1])
                 y = int(l[2])
                 coord_list = [(2,-2),(1,-2),(0,-2),(-1,-2),(-2,-2),(2,-1),(1,-1),(0,-1),(-1,-1),(-2,-1),(2,0),(1,0),(0,0),(-1,0),(-2,0),(2,1),(1,1),(0,1),(-1,1),(-2,1),(2,2),(1,2),(0,2),(-1,2),(-2,2)]
+                outerMappingList = [1,2,3,4,5,10,15,20,25,24,23,22,21,16,11,6]
+                innerMappingList = [7,12,17,18,19,14,9,8]
                 id = int(pirate.getID())
-                movex, movey = coord_list[(id)%25]
+                if (id-1)%25  in outerMappingList:
+                    movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
+                elif (id-1)%25 in innerMappingList:
+                     movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%9]-1]
+                else:
+                     movex, movey = coord_list[(id)%25]
+                     movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
                 return moveTo(x+movex,y+movey,pirate)
             except:
                 return spread(pirate)
