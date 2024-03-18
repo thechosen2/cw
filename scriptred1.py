@@ -19,56 +19,149 @@ def getIslandCenter(pirate):
     nw,entity_nw = pirate.investigate_nw()
     se,entity_se = pirate.investigate_se()
     sw,entity_sw = pirate.investigate_sw()
+    current,entity_current = pirate.investigate_current()
     island_Coord = 0
-    x_c = None
+    island_string = up + down + left + right + ne + nw + se + sw
+    island_num = 0
+    if '1' in island_string:
+         island_num = 1
+    elif '2' in island_string:
+         island_num = 2
+    elif '3' in island_string:
+         island_num = 3
+    x_c = None 
     y_c = None
-    if 'island' in up and 'island' in right and "island" in ne:
+    if not 'island' in up and not 'island' in ne and not "island" in right and not 'island' in se and not 'island' in down and not 'island' in sw and not 'island' in left and not 'island' in nw:
+        island_Coord = 0
+    if not 'island' in up and  'island' in ne and not "island" in right and not 'island' in se and not 'island' in down and not 'island' in sw and not 'island' in left and not 'island' in nw:
         island_Coord = 1
-    elif 'island' in up and 'island' in right and "island" in left and 'island' in ne and 'island' in nw:
+    if  'island' in up and  'island' in ne and not "island" in right and not 'island' in se and not 'island' in down and not 'island' in sw and not 'island' in left and not 'island' in nw:
         island_Coord = 2
-    elif 'island' in up and 'island' in left and "island" in nw:
+    if  'island' in up and  'island' in ne and not "island" in right and not 'island' in se and not 'island' in down and not 'island' in sw and not 'island' in left and  'island' in nw:
         island_Coord = 3
-    elif 'island' in up and 'island' in right and "island" in ne and 'island' in se and 'island' in down:
+    if  'island' in up and not 'island' in ne and not "island" in right and not 'island' in se and not 'island' in down and not 'island' in sw and not 'island' in left and  'island' in nw:
         island_Coord = 4
-    elif 'island' in up and 'island' in right and "island" in ne and 'island' in down and 'island' in left and 'island' in nw and 'island' in se and 'island' in sw:
+    if not 'island' in up and not 'island' in ne and not "island" in right and not 'island' in se and not 'island' in down and not 'island' in sw and not 'island' in left and  'island' in nw:
         island_Coord = 5
-    elif 'island' in up and 'island' in left and "island" in down and 'island' in nw and 'island' in sw:
+    if not 'island' in up and  'island' in ne and  "island" in right and not 'island' in se and not 'island' in down and not 'island' in sw and not 'island' in left and not 'island' in nw:
         island_Coord = 6
-    elif 'island' in right and 'island' in down and "island" in se:
+    if  'island' in up and  'island' in ne and  "island" in right and not 'island' in se and not 'island' in down and not 'island' in sw and not 'island' in left and not 'island' in nw:
         island_Coord = 7
-    elif 'island' in left and 'island' in right and "island" in down and 'island' in se and 'island' in sw:
+    if  'island' in up and  'island' in ne and  "island" in right and not 'island' in se and not 'island' in down and not 'island' in sw and  'island' in left and  'island' in nw:
         island_Coord = 8
-    elif 'island' in down and 'island' in left and "island" in sw:
+    if  'island' in up and not 'island' in ne and not "island" in right and not 'island' in se and not 'island' in down and not 'island' in sw and  'island' in left and  'island' in nw:
         island_Coord = 9
+    if not 'island' in up and not 'island' in ne and not "island" in right and not 'island' in se and not 'island' in down and not 'island' in sw and  'island' in left and  'island' in nw:
+        island_Coord = 10
+    if not 'island' in up and  'island' in ne and  "island" in right and  'island' in se and not 'island' in down and not 'island' in sw and not 'island' in left and not 'island' in nw:
+        island_Coord = 11
+    if  'island' in up and  'island' in ne and  "island" in right and  'island' in se and  'island' in down and not 'island' in sw and not 'island' in left and not 'island' in nw:
+        island_Coord = 12
+    if  'island' in up and  'island' in ne and  "island" in right and  'island' in se and  'island' in down and  'island' in sw and  'island' in left and  'island' in nw:
+        island_Coord = 13
+    if  'island' in up and not 'island' in ne and not "island" in right and not 'island' in se and  'island' in down and  'island' in sw and  'island' in left and  'island' in nw:
+        island_Coord = 14
+    if not 'island' in up and not 'island' in ne and not "island" in right and not 'island' in se and not 'island' in down and  'island' in sw and  'island' in left and  'island' in nw:
+        island_Coord = 15
+    if not 'island' in up and not 'island' in ne and  "island" in right and  'island' in se and not 'island' in down and not 'island' in sw and not 'island' in left and not 'island' in nw:
+        island_Coord = 16
+    if not 'island' in up and not 'island' in ne and "island" in right and  'island' in se and  'island' in down and not 'island' in sw and not 'island' in left and not 'island' in nw:
+        island_Coord = 17
+    if not 'island' in up and not 'island' in ne and "island" in right and 'island' in se and 'island' in down and 'island' in sw and 'island' in left and not 'island' in nw:
+        island_Coord = 18
+    if not 'island' in up and not 'island' in ne and not "island" in right and not 'island' in se and  'island' in down and  'island' in sw and  'island' in left and not 'island' in nw:
+        island_Coord = 19
+    if not 'island' in up and not 'island' in ne and not "island" in right and not 'island' in se and not 'island' in down and  'island' in sw and  'island' in left and not 'island' in nw:
+        island_Coord = 20
+    if not 'island' in up and not 'island' in ne and not "island" in right and  'island' in se and not 'island' in down and not 'island' in sw and not 'island' in left and not 'island' in nw:
+        island_Coord = 21
+    if not 'island' in up and not 'island' in ne and not "island" in right and  'island' in se and  'island' in down and not 'island' in sw and not 'island' in left and not 'island' in nw:
+        island_Coord = 22
+    if not 'island' in up and not 'island' in ne and not "island" in right and 'island' in se and 'island' in down and  'island' in sw and not 'island' in left and not 'island' in nw:
+        island_Coord = 23
+    if not 'island' in up and not 'island' in ne and not "island" in right and not 'island' in se and 'island' in down and 'island' in sw and not 'island' in left and not 'island' in nw:
+        island_Coord = 24
+    if not 'island' in up and not 'island' in ne and not "island" in right and not 'island' in se and not 'island' in down and 'island' in sw and not 'island' in left and not 'island' in nw:
+        island_Coord = 25
     x,y = pirate.getPosition()
     if island_Coord == 1:
-        x_c = x + 1
-        y_c = y - 1
+        x_c = x + 2
+        y_c = y - 2
     if island_Coord == 2:
-            x_c = x
-            y_c = y - 1
-    if island_Coord == 3:
-            x_c = x - 1
-            y_c = y - 1
-    if island_Coord == 4:
             x_c = x + 1
-            y_c = y
-    if island_Coord == 5:
+            y_c = y - 2
+    if island_Coord == 3:
             x_c = x 
-            y_c = y
-    if island_Coord == 6:
+            y_c = y - 2
+    if island_Coord == 4:
             x_c = x - 1
-            y_c = y
+            y_c = y - 2
+    if island_Coord == 5:
+            x_c = x - 2
+            y_c = y - 2
+    if island_Coord == 6:
+            x_c = x + 2
+            y_c = y - 1 
     if island_Coord == 7:
             x_c = x + 1
-            y_c = y + 1
+            y_c = y - 1
     if island_Coord == 8:
             x_c = x
-            y_c = y + 1
+            y_c = y - 1
     if island_Coord == 9:
             x_c = x - 1
+            y_c = y - 1
+    if island_Coord == 10:
+            x_c = x - 2
+            y_c = y - 1
+    if island_Coord == 11:
+            x_c = x + 2
+            y_c = y
+    if island_Coord == 12:
+            x_c = x + 1
+            y_c = y
+    if island_Coord == 13:
+            x_c = x 
+            y_c = y 
+    if island_Coord == 14:
+            x_c = x - 1
+            y_c = y
+    if island_Coord == 15:
+            x_c = x - 2
+            y_c = y
+    if island_Coord == 16:
+            x_c = x + 2
             y_c = y + 1
-    return (x_c,y_c)
+    if island_Coord == 17:
+            x_c = x + 1
+            y_c = y + 1
+    if island_Coord == 18:
+            x_c = x
+            y_c = y + 1
+    if island_Coord == 19:
+            x_c = x - 1
+            y_c = y + 1
+    if island_Coord == 20:
+            x_c = x - 2
+            y_c = y + 1
+    if island_Coord == 21:
+            x_c = x + 2
+            y_c = y + 2
+    if island_Coord == 22:
+            x_c = x + 1
+            y_c = y + 2
+    if island_Coord == 23:
+            x_c = x
+            y_c = y + 2
+    if island_Coord == 24:
+            x_c = x - 1
+            y_c = y + 2
+    if island_Coord == 25:
+            x_c = x - 2
+            y_c = y + 2
+    if island_Coord ==0:
+         return None
+    return (x_c,y_c,island_num)
 def moveTo(x , y , Pirate):
     position = Pirate.getPosition()
     if position[0] == x and position[1] == y:
@@ -164,59 +257,24 @@ def ActPirate(pirate):
     # print(sig)
     # if sig == "reached":
     if pirate.getCurrentFrame()>200:
-        up = pirate.investigate_up()[0]
-        down = pirate.investigate_down()[0]
-        left = pirate.investigate_left()[0]
-        right = pirate.investigate_right()[0]
-        pirate.setSignal("")
-        s = pirate.trackPlayers()
+        if getIslandCenter(pirate):
+             x_c , y_c,island_num = getIslandCenter(pirate)
+             l = pirate.trackPlayers()
+             if l[island_num - 1] != 'myCaptured':
+                pirate.setTeamSignal(f'{island_num},{x_c},{y_c}')
+        else:
+             spread(pirate)
         
-        if (
-            (up == "island1" and s[0] != "myCaptured")
-            or (up == "island2" and s[1] != "myCaptured")
-            or (up == "island3" and s[2] != "myCaptured")
-        ):
-            s = up[-1] + str(x) + "," + str(y - 1)
-            pirate.setTeamSignal(s)
-
-        if (
-            (down == "island1" and s[0] != "myCaptured")
-            or (down == "island2" and s[1] != "myCaptured")
-            or (down == "island3" and s[2] != "myCaptured")
-        ):
-            s = down[-1] + str(x) + "," + str(y + 1)
-            pirate.setTeamSignal(s)
-
-        if (
-            (left == "island1" and s[0] != "myCaptured")
-            or (left == "island2" and s[1] != "myCaptured")
-            or (left == "island3" and s[2] != "myCaptured")
-        ):
-            s = left[-1] + str(x - 1) + "," + str(y)
-            pirate.setTeamSignal(s)
-
-        if (
-            (right == "island1" and s[0] != "myCaptured")
-            or (right == "island2" and s[1] != "myCaptured")
-            or (right == "island3" and s[2] != "myCaptured")
-        ):
-            s = right[-1] + str(x + 1) + "," + str(y)
-            pirate.setTeamSignal(s)
-
-        
+                
         if pirate.getTeamSignal() != "":
             s = pirate.getTeamSignal()
             l = s.split(",")
             try:
-                x = int(l[0][1:])
-                y = int(l[1])
-                coord_list = [(-1,-1),(-1,0),(1,-1),(-1,0),(0,0),(1,0),(-1,1),(0,1),(1,1)]
-                id = pirate.getID()
-                try:
-                    id = int(id)+1
-                except:
-                    id = 1
-                movex, movey = coord_list[id%9]
+                x = int(l[1])
+                y = int(l[2])
+                coord_list = [(2,-2),(1,-2),(0,-2),(-1,-2),(-2,-2),(2,-1),(1,-1),(0,-1),(-1,-1),(-2,-1),(2,0),(1,0),(0,0),(-1,0),(-2,0),(2,1),(1,1),(0,1),(-1,1),(-2,1),(2,2),(1,2),(0,2),(-1,2),(-2,2)]
+                id = int(pirate.getID())
+                movex, movey = coord_list[(id)%25]
                 return moveTo(x+movex,y+movey,pirate)
             except:
                 return spread(pirate)
@@ -349,6 +407,7 @@ def ActTeam(team):
     # print(team.getCurrentFrame()) 
     l = team.trackPlayers()
     s = team.getTeamSignal()
+    s1 = s.split(',')
     if team.getCurrentFrame()>200:
 
         team.buildWalls(1)
@@ -356,7 +415,12 @@ def ActTeam(team):
         team.buildWalls(3)
 
     if s:
-        island_no = int(s[0])
-        signal = l[island_no - 1]
-        if signal == "myCaptured":
-            team.setTeamSignal("")
+
+        island_no = int(s1[0])
+        # print(island_no)
+        try:
+            signal = l[island_no - 1]
+            if signal == "myCaptured":
+                team.setTeamSignal("")
+        except:
+             pass
