@@ -279,7 +279,7 @@ def ActPirate(pirate):
                 if (id-1)%25  in outerMappingList:
                     movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
                 elif (id-1)%25 in innerMappingList:
-                     movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%9]-1]
+                     movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%9]-1]
                 else:
                      movex, movey = coord_list[(id)%25]
                      movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
