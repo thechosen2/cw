@@ -315,10 +315,12 @@ def ActPirate(pirate):
                 if (id-1)%25  in outerMappingList:
                     movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
                 elif (id-1)%25 in innerMappingList:
-                     movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%9]-1]
-                else:
+                     movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
+                elif (id)%25 !=14:
                      movex, movey = coord_list[(id)%25]
                      movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
+                elif id%25==14:
+                     movex, movey =(0,0)
                 return moveTo(x+movex,y+movey,pirate)
             except:
                 return spread(pirate)
@@ -336,10 +338,12 @@ def ActPirate(pirate):
                 if (id-1)%25  in outerMappingList:
                     movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
                 elif (id-1)%25 in innerMappingList:
-                     movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%9]-1]
-                else:
+                     movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
+                elif (id)%25 !=14:
                      movex, movey = coord_list[(id)%25]
                      movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
+                elif id%25==14:
+                     movex, movey =(0,0)
                 return moveTo(x+movex,y+movey,pirate)
             except:
                 return spread(pirate)
@@ -359,10 +363,12 @@ def ActPirate(pirate):
                 if (id-1)%25  in outerMappingList:
                     movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
                 elif (id-1)%25 in innerMappingList:
-                     movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%9]-1]
-                else:
+                     movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
+                elif (id)%25 !=14:
                      movex, movey = coord_list[(id)%25]
                      movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
+                elif id%25==14:
+                     movex, movey =(0,0)
                 mdis2 = abs(x2 + movex - x_self) + abs(y2 + movey - y_self)
                 mdis3 = abs(x3 + movex - x_self) + abs(y3 + movey - y_self)
                 if(mdis2 < mdis3):
@@ -387,10 +393,12 @@ def ActPirate(pirate):
                 if (id-1)%25  in outerMappingList:
                     movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
                 elif (id-1)%25 in innerMappingList:
-                     movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%9]-1]
-                else:
+                     movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
+                elif (id)%25 !=14:
                      movex, movey = coord_list[(id)%25]
                      movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
+                elif id%25==14:
+                     movex, movey =(0,0)
                 mdis2 = abs(x2 + movex - x_self) + abs(y2 + movey - y_self)
                 mdis1 = abs(x1 + movex - x_self) + abs(y1 + movey - y_self)
                 if(mdis2 < mdis1):
@@ -415,10 +423,12 @@ def ActPirate(pirate):
                 if (id-1)%25  in outerMappingList:
                     movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
                 elif (id-1)%25 in innerMappingList:
-                     movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%9]-1]
-                else:
+                     movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
+                elif (id)%25 !=14:
                      movex, movey = coord_list[(id)%25]
                      movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
+                elif id%25==14:
+                     movex, movey =(0,0)
                 mdis1 = abs(x1 + movex - x_self) + abs(y1 + movey - y_self)
                 mdis3 = abs(x3 + movex - x_self) + abs(y3 + movey - y_self)
                 if(mdis1 < mdis3):
@@ -445,10 +455,12 @@ def ActPirate(pirate):
                 if (id-1)%25  in outerMappingList:
                     movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
                 elif (id-1)%25 in innerMappingList:
-                     movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%9]-1]
-                else:
+                     movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
+                elif (id)%25 !=14:
                      movex, movey = coord_list[(id)%25]
                      movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
+                elif id%25==14:
+                     movex, movey =(0,0)
                 mdis1 = abs(x1 + movex - x_self) + abs(y1 + movey - y_self)
                 mdis2 = abs(x2 + movex - x_self) + abs(y2 + movey - y_self)
                 mdis3 = abs(x3 + movex - x_self) + abs(y3 + movey - y_self)
