@@ -1,10 +1,8 @@
-import random
-import math
+from random import randint 
 
-name = "sample1"
+name = 'sample4'
 
-
-def moveTo(x, y, Pirate):
+def moveTo(x , y , Pirate):
     position = Pirate.getPosition()
     if position[0] == x and position[1] == y:
         return 0
@@ -12,17 +10,62 @@ def moveTo(x, y, Pirate):
         return (position[1] < y) * 2 + 1
     if position[1] == y:
         return (position[0] > x) * 2 + 2
-    if random.randint(1, 2) == 1:
+    if randint(1, 2) == 1:
         return (position[0] > x) * 2 + 2
     else:
         return (position[1] < y) * 2 + 1
+    
+def checkfriends(pirate , quad ):
+    sum = 0 
+    up = pirate.investigate_up()[1]
+    print(up)
+    down = pirate.investigate_down()[1]
+    left = pirate.investigate_left()[1]
+    right = pirate.investigate_right()[1]
+    ne = pirate.investigate_ne()[1]
+    nw = pirate.investigate_nw()[1]
+    se = pirate.investigate_se()[1]
+    sw = pirate.investigate_sw()[1]
+    
+    if(quad=='ne'):
+        if(up == 'friend'):
+            sum +=1 
+        if(ne== 'friend'):
+            sum +=1 
+        if(right == 'friend'):
+            sum +=1 
+    if(quad=='se'):
+        if(down == 'friend'):
+            sum +=1 
+        if(right== 'friend'):
+            sum +=1 
+        if(se == 'friend'):
+            sum +=1 
+    if(quad=='sw'):
+        if(down == 'friend'):
+            sum +=1 
+        if(sw== 'friend'): 
+            sum +=1 
+        if(left == 'friend'):
+            sum +=1 
+    if(quad=='nw'):
+        if(up == 'friend'):
+            sum +=1 
+        if(nw == 'friend'):
+            sum +=1 
+        if(left == 'friend'):
+            sum +=1 
 
+    return sum
+    
+def spread(pirate):
+    return moveTo((int(pirate.getID())+pirate.getCurrentFrame())%40,(int(pirate.getID())+pirate.getCurrentFrame())%40,pirate)
 
 def ActPirate(pirate):
-    up = pirate.investigate_up()
-    down = pirate.investigate_down()
-    left = pirate.investigate_left()
-    right = pirate.investigate_right()
+    up = pirate.investigate_up()[0]
+    down = pirate.investigate_down()[0]
+    left = pirate.investigate_left()[0]
+    right = pirate.investigate_right()[0]
     x, y = pirate.getPosition()
     pirate.setSignal("")
     s = pirate.trackPlayers()
@@ -69,7 +112,7 @@ def ActPirate(pirate):
         return moveTo(x, y, pirate)
 
     else:
-        return random.randint(1, 4)
+        return spread(pirate)
 
 
 def ActTeam(team):

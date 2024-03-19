@@ -226,10 +226,10 @@ def spread(pirate):
         id = 1
     if y==id-1:
         return moveTo(0,id-1,pirate)
-    elif x == 39:
+    elif x == pirate.getDimensionX() - 1:
        return  moveTo(0,id-1,pirate)
     else:
-       return  moveTo(39,id-1,pirate)
+       return  moveTo(pirate.getDimensionX() - 1,id-1,pirate)
 
 def findEnemyAtIsalnd(x_c,y_c,pirate):
 
@@ -274,8 +274,6 @@ def ActPirate(pirate):
                     elif island_num == 3:
                          st = t[0] + "," + t[1] + "," + t[2] + "," + t[3] + "," + str(x_c) + "," + str(y_c)
                          pirate.setTeamSignal(st)
-    else:
-        spread(pirate)
     if pirate.getCurrentFrame()>200:
         
         
@@ -468,7 +466,7 @@ def ActPirate(pirate):
         
         # a= pirate.getID()
         id = (int(pirate.getID())-1)
-        a=id%40
+        a=id%pirate.getDimensionY()
         if a%40>40:
             sig = pirate.getTeamSignal()
             try:
@@ -477,8 +475,8 @@ def ActPirate(pirate):
                 b_spawn = pirate.getDeployPoint()[1]
             except:
                 a_spawn, b_spawn = (40-1,0)
-            width = 40-1
-            height = 40-1
+            width = pirate.getDimensionX()-1
+            height = pirate.getDimensionY()-1
             x_self, y_self = pirate.getPosition()
             if a_spawn == 0 and b_spawn == 0:
                 if y_self == a-1:
@@ -509,8 +507,8 @@ def ActPirate(pirate):
                 b_spawn = pirate.getDeployPoint()[1]
             except:
                 a_spawn, b_spawn = (40-1,0)
-            width = 40-1
-            height = 40-1
+            width = pirate.getDimensionX()-1
+            height = pirate.getDimensionY()-1
             x_self, y_self = pirate.getPosition()
             try:
                 counter = int(pirate.getSignal())
@@ -613,29 +611,55 @@ def ActPirate(pirate):
             if counter%2==0:
                 # print('Even')
                 if id <8:
-                    if y_self==a + counter and x_self == abs(width - a_spawn):
+                    if y_self==a + counter and x_self == abs(width - a_spawn) and b_spawn == 0:
                         # print('Fired')
                         counter +=1
                         pirate.setSignal(str(counter))
                         return moveTo(abs(width-a_spawn)+1,a+counter+1,pirate)
+                    if y_self==height -a + counter and x_self ==abs(width - a_spawn) and b_spawn == height:
+                        # print('Fired')
+                        # y_init = 39 - 1 - 0 + 1 = 39
+                        #y_final = 39 - 1 -1 +1
+                        counter -=1
+                        pirate.setSignal(str(counter))
+                        # print(f'Move To: {moveTo(abs(width-a_spawn)+1,height - a-counter+1,pirate)}')
+                        return moveTo(abs(width-a_spawn)+1,height - a+counter-1,pirate)
                 else:
-                    if y_self == a and x_self == abs(width-a_spawn):
+                    if y_self == a and x_self == abs(width-a_spawn) and b_spawn == 0 :
                          counter+=1
                          pirate.setSignal(str(counter))
                          return moveTo(abs(width-a_spawn)+1,a,pirate)
+                    elif y_self == height - a and x_self == abs(width - a_spawn) and b_spawn == height:
+                         counter+=1
+                         pirate.setSignal(str(counter))
+                         return moveTo(abs(width-a_spawn)+1,a,pirate)
+                         
             else:
                 # print('Odd')
                 if id<8:
-                    if y_self==a + counter and x_self ==a_spawn:
+                    if y_self==a + counter and x_self ==a_spawn and b_spawn == 0:
                         # print('Fired')
                         counter +=1
                         pirate.setSignal(str(counter))
                         return moveTo(a_spawn-1,a+counter+1,pirate)
+                    
+                    if y_self==height -a + counter  and x_self ==a_spawn and b_spawn == height:
+                        # print('Fired')
+                        #y_init = 39 - 1 -1
+                        #y_final = 39 - 1 -2
+                        counter -=1
+                        pirate.setSignal(str(counter))
+                        return moveTo(a_spawn-1,height - a+counter-1,pirate)
                 else:
-                    if y_self == a and x_self == a_spawn:
+                    if y_self == a and x_self == a_spawn and b_spawn == 0:
                          counter+=1
                          pirate.setSignal(str(counter))
                          return moveTo((a_spawn)-1,a,pirate)
+                    elif y_self == height - a and x_self == a_spawn and b_spawn == height:
+                         counter +=1
+                         pirate.setSignal(str(counter))
+                         return moveTo((a_spawn)-1,a,pirate)
+
                            
 
 
