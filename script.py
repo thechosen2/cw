@@ -64,7 +64,9 @@ def checkIsland(pirate):
 
 
 def ActPirate(pirate):
-    # complete this function
+    id = int(pirate.getID())-1
+    if(id < 8):
+        return circleAround(20,20,20-id,pirate)
     pass
 
 

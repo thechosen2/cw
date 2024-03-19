@@ -1,7 +1,7 @@
 from random import randint 
 import math
 
-name = 'def__init__'
+name = 'sample2'
 #Move to 2,2
 #From 2,3
 
@@ -9,41 +9,6 @@ name = 'def__init__'
 #DOWN = 1
 #LEFT = 4
 #RIGHT = 2
-
-def moveAway(x, y, Pirate):
-    position = Pirate.getPosition()
-    if position[0] == x and position[1] == y:
-        return randint(1, 4)
-    if randint(1, 2) == 1:
-        return (position[0] < x) * 2 + 2
-    else:
-        return (position[1] > y) * 2 + 1
-
-def circleAround(x, y, radius, Pirate, initial="abc", clockwise=True):
-    position = Pirate.getPosition()
-    rx = position[0]
-    ry = position[1]
-    pos = [[x + i, y + radius] for i in range(-1 * radius, radius + 1)]
-    pos.extend([[x + radius, y + i] for i in range(radius - 1, -1 * radius - 1, -1)])
-    pos.extend([[x + i, y - radius] for i in range(radius - 1, -1 * radius - 1, -1)])
-    pos.extend([[x - radius, y + i] for i in range(-1 * radius + 1, radius)])
-    if [rx, ry] not in pos:
-        if initial != "abc":
-            return moveTo(initial[0], initial[1], Pirate)
-        if rx in [x + i for i in range(-1 * radius, radius + 1)] and ry in [
-            y + i for i in range(-1 * radius, radius + 1)
-        ]:
-            return moveAway(x, y, Pirate)
-        else:
-            return moveTo(x, y, Pirate)
-    else:
-        index = pos.index([rx, ry])
-        return moveTo(
-            pos[(index + (clockwise * 2) - 1) % len(pos)][0],
-            pos[(index + (clockwise * 2) - 1) % len(pos)][1],
-            Pirate,
-        )
-
 def getIslandCenter(pirate):
    
     up,entity_up = pirate.investigate_up()
@@ -330,11 +295,9 @@ def ActPirate(pirate):
                      movex, movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
                 elif (id-1)%25+1 in innerMappingList:
                      movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
-                elif (id)%25 !=14:
+                else:
                      movex, movey = coord_list[(id)%25]
                      movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
-                elif id%25==14:
-                     movex, movey =(0,0)
                 return moveTo(x+movex,y+movey,pirate)
             except:
                 return spread(pirate)
@@ -349,11 +312,9 @@ def ActPirate(pirate):
                 outerMappingList = [1,2,3,4,5,10,15,20,25,24,23,22,21,16,11,6]
                 innerMappingList = [7,12,17,18,19,14,9,8]
                 id = int(pirate.getID())
-                if (id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()<2000:
+                if (id-1)%25  in outerMappingList:
                     movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
-                elif(id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()>2000:
-                     movex, movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
-                elif (id-1)%25+1 in innerMappingList:
+                elif (id-1)%25 in innerMappingList:
                      movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
                 elif (id)%25 !=14:
                      movex, movey = coord_list[(id)%25]
@@ -374,11 +335,9 @@ def ActPirate(pirate):
                 outerMappingList = [1,2,3,4,5,10,15,20,25,24,23,22,21,16,11,6]
                 innerMappingList = [7,12,17,18,19,14,9,8]
                 id = int(pirate.getID())
-                if (id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()<2000:
+                if (id-1)%25  in outerMappingList:
                     movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
-                elif(id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()>2000:
-                     movex, movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
-                elif (id-1)%25+1 in innerMappingList:
+                elif (id-1)%25 in innerMappingList:
                      movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
                 elif (id)%25 !=14:
                      movex, movey = coord_list[(id)%25]
@@ -401,11 +360,9 @@ def ActPirate(pirate):
                 outerMappingList = [1,2,3,4,5,10,15,20,25,24,23,22,21,16,11,6]
                 innerMappingList = [7,12,17,18,19,14,9,8]
                 id = int(pirate.getID())
-                if (id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()<2000:
+                if (id-1)%25  in outerMappingList:
                     movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
-                elif(id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()>2000:
-                     movex, movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
-                elif (id-1)%25+1 in innerMappingList:
+                elif (id-1)%25 in innerMappingList:
                      movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
                 elif (id)%25 !=14:
                      movex, movey = coord_list[(id)%25]
@@ -433,11 +390,9 @@ def ActPirate(pirate):
                 outerMappingList = [1,2,3,4,5,10,15,20,25,24,23,22,21,16,11,6]
                 innerMappingList = [7,12,17,18,19,14,9,8]
                 id = int(pirate.getID())
-                if (id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()<2000:
+                if (id-1)%25  in outerMappingList:
                     movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
-                elif(id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()>2000:
-                     movex, movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
-                elif (id-1)%25+1 in innerMappingList:
+                elif (id-1)%25 in innerMappingList:
                      movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
                 elif (id)%25 !=14:
                      movex, movey = coord_list[(id)%25]
@@ -465,11 +420,9 @@ def ActPirate(pirate):
                 outerMappingList = [1,2,3,4,5,10,15,20,25,24,23,22,21,16,11,6]
                 innerMappingList = [7,12,17,18,19,14,9,8]
                 id = int(pirate.getID())
-                if (id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()<2000:
+                if (id-1)%25  in outerMappingList:
                     movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
-                elif(id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()>2000:
-                     movex, movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
-                elif (id-1)%25+1 in innerMappingList:
+                elif (id-1)%25 in innerMappingList:
                      movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
                 elif (id)%25 !=14:
                      movex, movey = coord_list[(id)%25]
@@ -499,11 +452,9 @@ def ActPirate(pirate):
                 outerMappingList = [1,2,3,4,5,10,15,20,25,24,23,22,21,16,11,6]
                 innerMappingList = [7,12,17,18,19,14,9,8]
                 id = int(pirate.getID())
-                if (id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()<2000:
+                if (id-1)%25  in outerMappingList:
                     movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
-                elif(id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()>2000:
-                     movex, movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
-                elif (id-1)%25+1 in innerMappingList:
+                elif (id-1)%25 in innerMappingList:
                      movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
                 elif (id)%25 !=14:
                      movex, movey = coord_list[(id)%25]
@@ -576,15 +527,6 @@ def ActPirate(pirate):
             except:
                 counter = 0
             # print(f'y_self = {y_self} x_self = {x_self} a+counter = {a + counter}')
-            if id<8:
-                if a_spawn == 0 and b_spawn == 0:
-                 return circleAround(20,20,20-id, pirate, clockwise=False)
-                elif a_spawn == 0 and b_spawn == height:
-                 return circleAround(20,20,20-id, pirate, clockwise=True)
-                elif a_spawn == width and b_spawn == height:
-                 return circleAround(20,20,20-id, pirate, clockwise=False)
-                else:
-                     return circleAround(20,20,20-id, pirate, clockwise=True)
             if counter%2 == 0 and id<8:
                 if a_spawn == 0 and b_spawn == 0:
                     if y_self == a+counter and x_self != width:
@@ -681,8 +623,6 @@ def ActPirate(pirate):
             if counter%2==0:
                 # print('Even')
                 if id <8:
-                    
-                    return circleAround(20,20,20-id,pirate)
                     if y_self==a + counter and x_self == abs(width - a_spawn) and b_spawn == 0:
                         # print('Fired')
                         counter +=1
@@ -709,7 +649,6 @@ def ActPirate(pirate):
             else:
                 # print('Odd')
                 if id<8:
-                    return circleAround(20,20,20-id,pirate)
                     if y_self==a + counter and x_self ==a_spawn and b_spawn == 0:
                         # print('Fired')
                         counter +=1

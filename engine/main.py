@@ -29,7 +29,7 @@ class Game:
         self.__sea = Group()
         self.__dim = dim
         self.__frame = 0
-        self.rate = 20
+        self.rate = 60
         self.explosion = pygame.image.load("images/explode.png")
         self.purple_pirate = pygame.image.load("images/piratepurple.png")
         self.screen = pygame.display.set_mode(
@@ -176,6 +176,7 @@ class Game:
         return im
 
     def run_game(self):
+        # pygame.display.iconify()
         iter = 0
         while True:
             iter += 1
@@ -803,25 +804,26 @@ class Game:
         game_over_font = pygame.font.SysFont(None, 48)
 
         if team == "blue":
-            # print("Blue Wins")
+            print("Blue Wins")
             game_over = game_over_font.render(
                 self.bname + " Wins", True, BLUE, LIGHT_GRAY
             )
             self.screen.blit(game_over, ((self.__dim[0]) * 10, (self.__dim[0]) * 10))
-
+            pygame.quit()
             # time.sleep(5)
             while True:
                 pygame.display.flip()
                 self.check_events()
 
         elif team == "red":
-            # print("Red Wins")
+            print("Red Wins")
             game_over = game_over_font.render(
                 self.rname + " Wins", True, RED, LIGHT_GRAY
             )
             self.screen.blit(game_over, ((self.__dim[0]) * 10, (self.__dim[0]) * 10))
             pygame.display.flip()
             # time.sleep(5)
+            pygame.quit()
             while True:
                 pygame.display.flip()
                 self.check_events()
