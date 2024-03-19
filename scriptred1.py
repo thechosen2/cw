@@ -9,6 +9,31 @@ name = 'def__init__'
 #DOWN = 1
 #LEFT = 4
 #RIGHT = 2
+def gundpowder_spread(pirate):
+    sw = checkfriends(pirate ,'sw' )
+    se = checkfriends(pirate ,'se' )
+    ne = checkfriends(pirate ,'ne' )
+    nw = checkfriends(pirate ,'nw' )
+   
+    my_dict = {'sw': sw, 'se': se, 'ne': ne, 'nw': nw}
+    sorted_dict = dict(sorted(my_dict.items(), key=lambda item: item[1]))
+
+    x, y = pirate.getPosition()
+    
+    if( x == 0 and y == 0):
+        return randint(1,4)
+    
+    if(sorted_dict[list(sorted_dict.keys())[3]] == 0 ):
+        return randint(1,4)
+    
+    if(list(sorted_dict())[0] == 'sw'):
+        return moveTo(x-1 , y+1 , pirate)
+    elif(list(sorted_dict())[0] == 'se'):
+        return moveTo(x+1 , y+1 , pirate)
+    elif(list(sorted_dict())[0] == 'ne'):
+        return moveTo(x+1 , y-1 , pirate)
+    elif(list(sorted_dict())[0] == 'nw'):
+        return moveTo(x-1 , y-1 , pirate)
 
 def moveAway(x, y, Pirate):
     position = Pirate.getPosition()
@@ -313,8 +338,22 @@ def ActPirate(pirate):
         
         
         l = pirate.trackPlayers()
+        print(l)
+        if pirate.getSignal() == 'spreading' and pirate.getTotalGunpowder() <= 300:
+             return gundpowder_spread(pirate)
+        else: pirate.setSignal('')
+        
+        if ('island1' in pirate.investigate_current()[0] and l[0]!='myCapturing') or ('island2' in pirate.investigate_current()[0] and l[1]!='myCapturing') or ('island3' in pirate.investigate_current()[0] and l[2]!='myCapturing'):
+             print('Finding Reason why island is not getting captured')
+             print(f'Total Gunpowder= {pirate.getTotalGunpowder()}')
+             if pirate.getTotalGunpowder() <= 150:
+                  if int(pirate.getID())%2 == 0:
+                       print('Due to GUnpowder')
+                       pirate.setSignal('spreading')
+                       return gundpowder_spread(pirate)
+
         if l[0] != 'myCaptured' and l[1]=='myCaptured' and l[2]=='myCaptured':
-            s = pirate.getTeamSignal()
+            s = pirate.getTeamSignal()  
             t = s.split(",")
             try:
                 x = int(t[0])
@@ -584,7 +623,7 @@ def ActPirate(pirate):
                 elif a_spawn == width and b_spawn == height:
                  return circleAround(20,20,20-id, pirate, clockwise=False)
                 else:
-                     return circleAround(20,20,20-id, pirate, clockwise=True)
+                 return circleAround(20,20,20-id, pirate, clockwise=True)
             if counter%2 == 0 and id<8:
                 if a_spawn == 0 and b_spawn == 0:
                     if y_self == a+counter and x_self != width:
