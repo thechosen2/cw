@@ -9,31 +9,75 @@ name = 'def__init__'
 #DOWN = 1
 #LEFT = 4
 #RIGHT = 2
+def nearest_island(pirate):
+     x,y = pirate.getPosition()
+     x1,y1,x2,y2,x3,y3 = (int(pirate.getTeamSignal().split(",")[0]),int(pirate.getTeamSignal().split(",")[1]),int(pirate.getTeamSignal().split(",")[2]),int(pirate.getTeamSignal().split(",")[3]),int(pirate.getTeamSignal().split(",")[4]),int(pirate.getTeamSignal().split(",")[5]))
+     mdis1 = abs(x1-x) + abs(y1-y)
+     mdis2 = abs(x2-x) + abs(y2-y)
+     mdis3 = abs(x3-x) + abs(y3-y)
+     if(mdis1 == min(mdis1,mdis2,mdis3)):
+          return 1
+     elif(mdis2 == min(mdis1,mdis2,mdis3)):
+          return 2
+     else:
+          return 3
+          
+     
 def gundpowder_spread(pirate):
-    sw = checkfriends(pirate ,'sw' )
-    se = checkfriends(pirate ,'se' )
-    ne = checkfriends(pirate ,'ne' )
-    nw = checkfriends(pirate ,'nw' )
-   
-    my_dict = {'sw': sw, 'se': se, 'ne': ne, 'nw': nw}
-    sorted_dict = dict(sorted(my_dict.items(), key=lambda item: item[1]))
+     sig = pirate.getSignal()
+    #  print(f'Gunpowder Spreading called with sig:{sig}')
+     sig_spreading = sig.split(',')[1]
+     try:
+         counter = int(sig_spreading.split(';')[-1])
+         print(f'COunter: {counter}')
+     except:
+          print('FAiling TRY ALways')
+          counter = 0
+     x_self , y_self = pirate.getPosition()
+     width = pirate.getDimensionX() - 1
 
-    x, y = pirate.getPosition()
+     id = int(pirate.getID())
+    #  print(f'GUnpowder SPreading CAlled WIth COunter: {counter} FOr ID: {id} ANd SIgnal SPreading:{sig_spreading}')
+     if counter % 2 == 0:
+         if y_self == (id + counter)%40 and x_self == 0:
+              counter += 1
+              print('Changing signal')
+
+              pirate.setSignal(sig.split(",")[0] + ',' + 'spreading;' + str(counter))
+              return moveTo(x_self,y_self + 1,pirate)
+         else:
+              pirate.setSignal(sig.split(",")[0] + ',' + 'spreading;' + str(counter))
+     else:
+          if y_self == (id + counter)%40 and x_self == width:
+              counter += 1
+              print('Changing signal')
+              pirate.setSignal(sig.split(",")[0] + ',' + 'spreading;' + str(counter))
+              return moveTo(x_self,y_self + 1,pirate)
+          else:
+               pirate.setSignal(sig.split(",")[0] + ',' + 'spreading;' + str(counter))
+
+     if counter % 2 == 0:
+          if y_self == (id + counter)%40 and x_self !=0:
+               print(f'MOving TO 0,{y_self}')
+               return moveTo(0,y_self,pirate)
+          elif y_self != (id + counter)%40:
+               print(f'MOving TO {x_self},{(id + counter)%40}')
+               return moveTo(x_self,(id + counter)%40,pirate)
+     else:
+          if y_self == (id + counter)%40 and x_self !=width:
+               print(f'MOving TO {width},{(id + counter)%40}')
+               return moveTo(width,y_self,pirate)
+          elif y_self != (id + counter)%40:
+               print(f'MOving TO {x_self},{(id + counter)%40}')
+               return moveTo(x_self,id + counter,pirate)
+          
     
-    if( x == 0 and y == 0):
-        return randint(1,4)
+     
     
-    if(sorted_dict[list(sorted_dict.keys())[3]] == 0 ):
-        return randint(1,4)
+          
+     
+     
     
-    if(list(sorted_dict())[0] == 'sw'):
-        return moveTo(x-1 , y+1 , pirate)
-    elif(list(sorted_dict())[0] == 'se'):
-        return moveTo(x+1 , y+1 , pirate)
-    elif(list(sorted_dict())[0] == 'ne'):
-        return moveTo(x+1 , y-1 , pirate)
-    elif(list(sorted_dict())[0] == 'nw'):
-        return moveTo(x-1 , y-1 , pirate)
 
 def moveAway(x, y, Pirate):
     position = Pirate.getPosition()
@@ -359,15 +403,15 @@ def ActPirate(pirate):
         sig = id + "," + sig
         pirate.setSignal(sig)
     # id = id%40
-    # print(sig)
+    #  (sig)
     # if sig == "reached":
     if getIslandCenter(pirate):
              x_c , y_c,island_num = getIslandCenter(pirate)
              l = pirate.trackPlayers()
              s = pirate.getTeamSignal()
              t = s.split(",")
-            #  print(s)
-            #  print((island_num-1)*2+1)
+            #   (s)
+            #   ((island_num-1)*2+1)
              if t[(island_num-1) * 2] == "" and t[(island_num-1) * 2 + 1] == "":
                     if(island_num == 1):
                         st = str(x_c) + "," + str(y_c) + "," + t[2] + "," + t[3] + "," + t[4] + "," + t[5] 
@@ -391,11 +435,11 @@ def ActPirate(pirate):
              farman = possible_farmans[i]
              if f'i:{id}' in farman:
                   island_to_guard = farman.split(':')[-1]
-                #   print("farman aaya hai to " + farman)
+                #    ("farman aaya hai to " + farman)
 
                   pirate.setSignal(pirate.getSignal().split(',')[0] + ',' + 'guarding' + island_to_guard)
-                #   print(pirate.getTeamSignal())
-                #   print(island_to_guard)
+                #    (pirate.getTeamSignal())
+                #    (island_to_guard)
                   x_island = int(pirate.getTeamSignal().split(',')[2*(int(island_to_guard) - 1)])
                   y_island = int(pirate.getTeamSignal().split(',')[2*int(island_to_guard) -1])
 
@@ -403,43 +447,44 @@ def ActPirate(pirate):
                   for j in range(len(possible_farmans)):
                        if j != i:
                             team_sig_to_set += possible_farmans[j] + ','
-                #   print("team_sig_to_set",team_sig_to_set)
+                #    ("team_sig_to_set",team_sig_to_set)
 
                   pirate.setTeamSignal(team_sig_to_set[:-1])
                 #   return moveTo(x_island,y_island,pirate) 
         
         
         l = pirate.trackPlayers()
-        # print(pirate.getSignal())
+        #  (pirate.getSignal())
         if 'guarding' in pirate.getSignal():
-            #  print("entered guarding if")
+            #   ("entered guarding if")
              split_signal = pirate.getSignal().split(",")
              for ele in split_signal:
                   if 'guarding' in ele:
-                    #    print(ele)
-                    #    print(pirate.getTeamSignal())
+                    #     (ele)
+                    #     (pirate.getTeamSignal())
                        island_to_guard = ele[-1]
                        x_island = int(pirate.getTeamSignal().split(',')[2*(int(island_to_guard) - 1)])
                        y_island = int(pirate.getTeamSignal().split(',')[2*(int(island_to_guard)) - 1])
-                    #    print('guarding at',x_island," ",y_island)
+                    #     ('guarding at',x_island," ",y_island)
                        return moveTo(x_island,y_island,pirate)
                        
 
-        # print(l)
+        #  (l)
         if 'spreading' in pirate.getSignal()  and pirate.getTotalGunpowder() < 200:
+            #  pirate.setSignal(pirate.getSignal() + ',spreading')
              return gundpowder_spread(pirate)
         elif 'guarding' not in pirate.getSignal(): 
-            # print(pirate.getSignal(),"- signal changed to -",pirate.getSignal().split(",")[0] + "," )
-            pirate.setSignal(pirate.getSignal().split(",")[0] + ",")
+            #  print(pirate.getSignal(),"- signal changed to -",pirate.getSignal().split(",")[0] + "," )
+             pirate.setSignal(pirate.getSignal().split(",")[0] + ",")
         
         if ('island1' in pirate.investigate_current()[0] and (l[0]!='myCapturing' or l[0]!='myCaptured')) or ('island2' in pirate.investigate_current()[0] and (l[1]!='myCapturing' or l[1]!='myCaptured')) or ('island3' in pirate.investigate_current()[0] and (l[2]!='myCapturing' or l[2]!='myCaptured')):
-            #  print('Finding Reason why island is not getting captured')
-            #  print(f'Total Gunpowder= {pirate.getTotalGunpowder()}')
+            #   ('Finding Reason why island is not getting captured')
+            #   (f'Total Gunpowder= {pirate.getTotalGunpowder()}')
              if pirate.getTotalGunpowder() <= 150 and 'guarding' not in pirate.getSignal():
                   if int(pirate.getID())%2 == 0:
-                    #    print('Due to GUnpowder')
-                    #    print(pirate.getSignal(),"- signal changed to -",pirate.getSignal().split(",")[0] + "," )
-                       pirate.setSignal(pirate.getSignal().split(",")[0] + "," + 'spreading')
+                    #     ('Due to GUnpowder')
+                    #     (pirate.getSignal(),"- signal changed to -",pirate.getSignal().split(",")[0] + "," )
+                    #    pirate.setSignal(pirate.getSignal().split(",")[0] + "," + 'spreading')
                        return gundpowder_spread(pirate)
 
         if l[0] != 'myCaptured' and l[1]=='myCaptured' and l[2]=='myCaptured':
@@ -453,10 +498,12 @@ def ActPirate(pirate):
                 outerMappingList = [1,2,3,4,5,10,15,20,25,24,23,22,21,16,11,6]
                 innerMappingList = [7,12,17,18,19,14,9,8]
                 id = int(pirate.getID())
-                if (id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()<2000:
-                    movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
-                elif(id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()>2000:
+                nearest_island_index = nearest_island(pirate)-1
+                
+                if((id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()>2000) or  (l[nearest_island_index+3]=='oppCapturing' or l[nearest_island_index+3]=='oppCaptured') :
                      movex, movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
+                elif (id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()<2000:
+                    movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
                 elif (id-1)%25+1 in innerMappingList:
                      movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
                 elif (id)%25 !=14:
@@ -478,10 +525,12 @@ def ActPirate(pirate):
                 outerMappingList = [1,2,3,4,5,10,15,20,25,24,23,22,21,16,11,6]
                 innerMappingList = [7,12,17,18,19,14,9,8]
                 id = int(pirate.getID())
-                if (id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()<2000:
-                    movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
-                elif(id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()>2000:
+                nearest_island_index = nearest_island(pirate)-1
+                
+                if((id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()>2000) or  (l[nearest_island_index+3]=='oppCapturing' or l[nearest_island_index+3]=='oppCaptured') :
                      movex, movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
+                elif (id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()<2000:
+                    movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
                 elif (id-1)%25+1 in innerMappingList:
                      movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
                 elif (id)%25 !=14:
@@ -503,10 +552,12 @@ def ActPirate(pirate):
                 outerMappingList = [1,2,3,4,5,10,15,20,25,24,23,22,21,16,11,6]
                 innerMappingList = [7,12,17,18,19,14,9,8]
                 id = int(pirate.getID())
-                if (id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()<2000:
-                    movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
-                elif(id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()>2000:
+                nearest_island_index = nearest_island(pirate)-1
+                
+                if((id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()>2000) or  (l[nearest_island_index+3]=='oppCapturing' or l[nearest_island_index+3]=='oppCaptured') :
                      movex, movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
+                elif (id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()<2000:
+                    movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
                 elif (id-1)%25+1 in innerMappingList:
                      movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
                 elif (id)%25 !=14:
@@ -530,10 +581,12 @@ def ActPirate(pirate):
                 outerMappingList = [1,2,3,4,5,10,15,20,25,24,23,22,21,16,11,6]
                 innerMappingList = [7,12,17,18,19,14,9,8]
                 id = int(pirate.getID())
-                if (id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()<2000:
-                    movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
-                elif(id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()>2000:
+                nearest_island_index = nearest_island(pirate)-1
+                
+                if((id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()>2000) or  (l[nearest_island_index+3]=='oppCapturing' or l[nearest_island_index+3]=='oppCaptured') :
                      movex, movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
+                elif (id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()<2000:
+                    movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
                 elif (id-1)%25+1 in innerMappingList:
                      movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
                 elif (id)%25 !=14:
@@ -541,6 +594,7 @@ def ActPirate(pirate):
                      movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
                 elif id%25==14:
                      movex, movey =(0,0)
+                # return moveTo(x+movex,y+movey,pirate)
                 mdis2 = abs(x2 + movex - x_self) + abs(y2 + movey - y_self)
                 mdis3 = abs(x3 + movex - x_self) + abs(y3 + movey - y_self)
                 if(mdis2 < mdis3):
@@ -562,10 +616,12 @@ def ActPirate(pirate):
                 outerMappingList = [1,2,3,4,5,10,15,20,25,24,23,22,21,16,11,6]
                 innerMappingList = [7,12,17,18,19,14,9,8]
                 id = int(pirate.getID())
-                if (id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()<2000:
-                    movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
-                elif(id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()>2000:
+                nearest_island_index = nearest_island(pirate)-1
+                
+                if((id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()>2000) or  (l[nearest_island_index+3]=='oppCapturing' or l[nearest_island_index+3]=='oppCaptured') :
                      movex, movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
+                elif (id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()<2000:
+                    movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
                 elif (id-1)%25+1 in innerMappingList:
                      movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
                 elif (id)%25 !=14:
@@ -573,6 +629,7 @@ def ActPirate(pirate):
                      movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
                 elif id%25==14:
                      movex, movey =(0,0)
+                # return moveTo(x+movex,y+movey,pirate)
                 mdis2 = abs(x2 + movex - x_self) + abs(y2 + movey - y_self)
                 mdis1 = abs(x1 + movex - x_self) + abs(y1 + movey - y_self)
                 if(mdis2 < mdis1):
@@ -594,10 +651,12 @@ def ActPirate(pirate):
                 outerMappingList = [1,2,3,4,5,10,15,20,25,24,23,22,21,16,11,6]
                 innerMappingList = [7,12,17,18,19,14,9,8]
                 id = int(pirate.getID())
-                if (id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()<2000:
-                    movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
-                elif(id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()>2000:
+                nearest_island_index = nearest_island(pirate)-1
+                
+                if((id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()>2000) or  (l[nearest_island_index+3]=='oppCapturing' or l[nearest_island_index+3]=='oppCaptured') :
                      movex, movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
+                elif (id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()<2000:
+                    movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
                 elif (id-1)%25+1 in innerMappingList:
                      movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
                 elif (id)%25 !=14:
@@ -605,6 +664,7 @@ def ActPirate(pirate):
                      movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
                 elif id%25==14:
                      movex, movey =(0,0)
+                # return moveTo(x+movex,y+movey,pirate)
                 mdis1 = abs(x1 + movex - x_self) + abs(y1 + movey - y_self)
                 mdis3 = abs(x3 + movex - x_self) + abs(y3 + movey - y_self)
                 if(mdis1 < mdis3):
@@ -628,10 +688,12 @@ def ActPirate(pirate):
                 outerMappingList = [1,2,3,4,5,10,15,20,25,24,23,22,21,16,11,6]
                 innerMappingList = [7,12,17,18,19,14,9,8]
                 id = int(pirate.getID())
-                if (id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()<2000:
-                    movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
-                elif(id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()>2000:
+                nearest_island_index = nearest_island(pirate)-1
+                
+                if((id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()>2000) or  (l[nearest_island_index+3]=='oppCapturing' or l[nearest_island_index+3]=='oppCaptured') :
                      movex, movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
+                elif (id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()<2000:
+                    movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
                 elif (id-1)%25+1 in innerMappingList:
                      movex,movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
                 elif (id)%25 !=14:
@@ -639,6 +701,7 @@ def ActPirate(pirate):
                      movex,movey = coord_list[outerMappingList[(pirate.getCurrentFrame()+id)%16]-1]
                 elif id%25==14:
                      movex, movey =(0,0)
+                # return moveTo(x+movex,y+movey,pirate)
                 mdis1 = abs(x1 + movex - x_self) + abs(y1 + movey - y_self)
                 mdis2 = abs(x2 + movex - x_self) + abs(y2 + movey - y_self)
                 mdis3 = abs(x3 + movex - x_self) + abs(y3 + movey - y_self)
@@ -692,7 +755,7 @@ def ActPirate(pirate):
                     return moveTo(x_self, height-a-1, pirate)
             return 0
         else:
-            # print('Reached here')
+            #  ('Reached here')
             #The initial 8 ships will move according to this
             try:
                 a_spawn = pirate.getDeployPoint()[0]
@@ -706,7 +769,7 @@ def ActPirate(pirate):
                 counter = int(pirate.getSignal().split(",")[1])
             except:
                 counter = 0
-            # print(f'y_self = {y_self} x_self = {x_self} a+counter = {a + counter}')
+            #  (f'y_self = {y_self} x_self = {x_self} a+counter = {a + counter}')
             if id<8:
                 if a_spawn == 0 and b_spawn == 0:
                  return circleAround(width//2,height//2,width//2-id, pirate, clockwise=False)
@@ -807,50 +870,50 @@ def ActPirate(pirate):
             #Check if one route is over
             #If counter is even then route is from x = a_spawn to x = |width - a_spawn|
             #If counter is odd then route is from x = |width - a_spawn| to x=a_spawn
-            # print('Checking for route completion')
-            # print(f'Counter = {counter}')
+            #  ('Checking for route completion')
+            #  (f'Counter = {counter}')
             if counter%2==0:
-                # print('Even')
+                #  ('Even')
                 if id <8:
                     
                     return circleAround(width//2,height//2,width//2-id,pirate)
                     if y_self==a + counter and x_self == abs(width - a_spawn) and b_spawn == 0:
-                        # print('Fired')
+                        #  ('Fired')
                         counter +=1
                         pirate.setSignal(pirate.getSignal().split(",")[0]+","+str(counter))
                         return moveTo(abs(width-a_spawn)+1,a+counter+1,pirate)
                     if y_self==height -a + counter and x_self ==abs(width - a_spawn) and b_spawn == height:
-                        # print('Fired')
+                        #  ('Fired')
                         # y_init = 39 - 1 - 0 + 1 = 39
                         #y_final = 39 - 1 -1 +1
                         counter -=1
                         pirate.setSignal(pirate.getSignal().split(",")[0]+","+str(counter))
-                        # print(f'Move To: {moveTo(abs(width-a_spawn)+1,height - a-counter+1,pirate)}')
+                        #  (f'Move To: {moveTo(abs(width-a_spawn)+1,height - a-counter+1,pirate)}')
                         return moveTo(abs(width-a_spawn)+1,height - a+counter-1,pirate)
                 else:
                     if y_self == a and x_self == abs(width-a_spawn) and b_spawn == 0 :
                          counter+=1
-                        #  print(pirate.getSignal(),"- signal changed to -",pirate.getSignal().split(",")[0]+","+str(counter) )
+                        #   (pirate.getSignal(),"- signal changed to -",pirate.getSignal().split(",")[0]+","+str(counter) )
                          pirate.setSignal(pirate.getSignal().split(",")[0]+","+str(counter))
                          return moveTo(abs(width-a_spawn)+1,a,pirate)
                     elif y_self == height - a and x_self == abs(width - a_spawn) and b_spawn == height:
                          counter+=1
-                        #  print(pirate.getSignal(),"- signal changed to -",pirate.getSignal().split(",")[0]+","+str(counter) )
+                        #   (pirate.getSignal(),"- signal changed to -",pirate.getSignal().split(",")[0]+","+str(counter) )
                          pirate.setSignal(pirate.getSignal().split(",")[0]+","+str(counter))
                          return moveTo(abs(width-a_spawn)+1,a,pirate)
                          
             else:
-                # print('Odd')
+                #  ('Odd')
                 if id<8:
                     return circleAround(width//2,height//2,width//2-id,pirate)
                     if y_self==a + counter and x_self ==a_spawn and b_spawn == 0:
-                        # print('Fired')
+                        #  ('Fired')
                         counter +=1
                         pirate.setSignal(pirate.getSignal().split(",")[0]+","+str(counter))
                         return moveTo(a_spawn-1,a+counter+1,pirate)
                     
                     if y_self==height -a + counter  and x_self ==a_spawn and b_spawn == height:
-                        # print('Fired')
+                        #  ('Fired')
                         #y_init = 39 - 1 -1
                         #y_final = 39 - 1 -2
                         counter -=1
@@ -859,12 +922,12 @@ def ActPirate(pirate):
                 else:
                     if y_self == a and x_self == a_spawn and b_spawn == 0:
                          counter+=1
-                        #  print(pirate.getSignal(),"- signal changed to -",pirate.getSignal().split(",")[0]+","+str(counter) )
+                        #   (pirate.getSignal(),"- signal changed to -",pirate.getSignal().split(",")[0]+","+str(counter) )
                          pirate.setSignal(pirate.getSignal().split(",")[0]+","+str(counter))
                          return moveTo((a_spawn)-1,a,pirate)
                     elif y_self == height - a and x_self == a_spawn and b_spawn == height:
                          counter +=1
-                        #  print(pirate.getSignal(),"- signal changed to -",pirate.getSignal().split(",")[0]+","+str(counter) )
+                        #   (pirate.getSignal(),"- signal changed to -",pirate.getSignal().split(",")[0]+","+str(counter) )
                          pirate.setSignal(pirate.getSignal().split(",")[0]+","+str(counter))
                          return moveTo((a_spawn)-1,a,pirate)
 
@@ -904,20 +967,20 @@ def ActTeam(team):
                             island_list.append(pirate_id)
                             if(len(island_list)==4):
                                 break
-                        # print(team.getTeamSignal())
-    print(team.getTeamSignal())
-    # print(guarding_status)
+                        #  (team.getTeamSignal())
+    #  (team.getTeamSignal())
+    #  (guarding_status)
     if team.getCurrentFrame()>200:
 
         team.buildWalls(1)
         team.buildWalls(2)
         team.buildWalls(3)
     
-    # print(team.getCurrentFrame())
+    #  (team.getCurrentFrame())
     # if s:
 
     #     # island_no = int(s1[0])
-    #     # print(island_no)
+    #     #  (island_no)
     #     try:
     #         signal = l[island_no - 1]
     #         if signal == "myCaptured":

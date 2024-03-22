@@ -264,6 +264,8 @@ class Pirate(Sprite):
     
     def setSignal(self, sig):
         str = "wncc"
+        if self.type == 'red':
+         print(f'Changing signal from : {self.__signal} to : {sig}')
         if type(sig) != type(str) or len(sig) > 100:
             print("received signal length greater than 100")
             return
