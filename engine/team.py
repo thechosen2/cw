@@ -175,6 +175,7 @@ class Team:
     def setTeamSignal(self, s):
         str = "wncc"
         if type(s) != type(str) or len(s) > 100:
+            print("Greater than 100")
             return
         self.__signal = s
 

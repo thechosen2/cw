@@ -588,6 +588,7 @@ class Game:
                 #         np.savetxt(f"C:/Users/PRANAV PRAKASH/Projects/codewars-v4/{directory}/pirates_{directory}.txt", number_names_array, fmt='%s', delimiter='|')
 
     def replenish(self):
+        # return
         for i in range(0, self.__dim[0]):
             for j in range(0, self.__dim[1]):
                 if len(self.__gunpowder) < (self.__dim[0] * self.__dim[1]) / 80:

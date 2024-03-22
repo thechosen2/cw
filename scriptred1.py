@@ -276,7 +276,44 @@ def checkfriends(pirate , quad ):
             sum +=1 
 
     return sum
-    
+
+def checkenemies(pirate):
+    counter = int(pirate.getSignal().split(",")[1])
+    a_spawn,b_spawn = pirate.getDeployPoint()
+    width =pirate.getDimensionX()
+    height = pirate.getDimensionY()
+    x,y = pirate.getPosition()
+    up = pirate.investigate_up()[1]
+    down = pirate.investigate_down()[1]
+    left = pirate.investigate_left()[1]
+    right = pirate.investigate_right()[1]
+    ne = pirate.investigate_ne()[1]
+    nw = pirate.investigate_nw()[1]
+    se = pirate.investigate_se()[1]
+    sw = pirate.investigate_sw()[1]
+    movex, movey=(0,0)
+    if(up == 'enemy'):
+         if(counter%2==0):
+              if(a_spawn == 0):
+                   return moveTo(x+1,y,pirate)
+              else:
+                   return moveTo(x-1,y,pirate)
+         else:
+              if(a_spawn == width-1):
+                   return moveTo(x+1,y,pirate)
+              else:
+                   return moveTo(x-1,y,pirate)
+    if(down == 'enemy'): movex, movey = (0,-1)
+    if(right == 'enemy'): movex, movey = (-1,0)
+    if(left == 'enemy'): movex, movey = (1,0)
+    if(ne == 'enemy'): movex, movey = (-1,+1)
+    if(se == 'enemy'): movex, movey = (-1,-1)
+    if(nw == 'enemy'): movex, movey = (+1,+1)
+    if(sw == 'enemy'): movex, movey = (+1,-1)
+    return moveTo(x+movex, y+movey, pirate)
+         
+
+
 def spread(pirate):
     x,y = pirate.getPosition()
     id = pirate.getID()
@@ -335,59 +372,65 @@ def ActPirate(pirate):
                     if(island_num == 1):
                         st = str(x_c) + "," + str(y_c) + "," + t[2] + "," + t[3] + "," + t[4] + "," + t[5] 
                         for i in range(6, len(t)):
-                             st += t[i]
+                             st += "," + t[i]
                         pirate.setTeamSignal(st)
                     elif island_num == 2:
                         st = t[0] + "," + t[1] + "," + str(x_c) + "," + str(y_c) + "," + t[4] + "," + t[5]
                         for i in range(6, len(t)):
-                             st += t[i]
+                             st += "," + t[i]
                         pirate.setTeamSignal(st)
                     elif island_num == 3:
                          st = t[0] + "," + t[1] + "," + t[2] + "," + t[3] + "," + str(x_c) + "," + str(y_c)
                          for i in range(6, len(t)):
-                             st += t[i]
+                             st += "," + t[i]
                          pirate.setTeamSignal(st)
     if pirate.getCurrentFrame()>200:
         #Check for farman
         possible_farmans = pirate.getTeamSignal().split(',')
         for i in range(len(possible_farmans)):
              farman = possible_farmans[i]
-             if f'id:{id}' in farman:
+             if f'i:{id}' in farman:
                   island_to_guard = farman.split(':')[-1]
                 #   print("farman aaya hai to " + farman)
 
                   pirate.setSignal(pirate.getSignal().split(',')[0] + ',' + 'guarding' + island_to_guard)
-                #   print(pirate.getSignal())
-                  x_island = int(pirate.getTeamSignal().split(',')[int(island_to_guard) - 1])
-                  y_island = int(pirate.getTeamSignal().split(',')[int(island_to_guard)])
+                #   print(pirate.getTeamSignal())
+                #   print(island_to_guard)
+                  x_island = int(pirate.getTeamSignal().split(',')[2*(int(island_to_guard) - 1)])
+                  y_island = int(pirate.getTeamSignal().split(',')[2*int(island_to_guard) -1])
 
                   team_sig_to_set = ''
                   for j in range(len(possible_farmans)):
                        if j != i:
-                            team_sig_to_set += farman + ','
-                  
+                            team_sig_to_set += possible_farmans[j] + ','
+                #   print("team_sig_to_set",team_sig_to_set)
 
                   pirate.setTeamSignal(team_sig_to_set[:-1])
-                  return moveTo(x_island,y_island,pirate) 
+                #   return moveTo(x_island,y_island,pirate) 
         
         
         l = pirate.trackPlayers()
         # print(pirate.getSignal())
         if 'guarding' in pirate.getSignal():
+            #  print("entered guarding if")
              split_signal = pirate.getSignal().split(",")
              for ele in split_signal:
                   if 'guarding' in ele:
+                    #    print(ele)
+                    #    print(pirate.getTeamSignal())
                        island_to_guard = ele[-1]
-                       x_island = int(pirate.getTeamSignal().split(',')[int(island_to_guard) - 1])
-                       y_island = int(pirate.getTeamSignal().split(',')[int(island_to_guard)])
-                       print('guarding at',x_island," ",y_island)
+                       x_island = int(pirate.getTeamSignal().split(',')[2*(int(island_to_guard) - 1)])
+                       y_island = int(pirate.getTeamSignal().split(',')[2*(int(island_to_guard)) - 1])
+                    #    print('guarding at',x_island," ",y_island)
                        return moveTo(x_island,y_island,pirate)
                        
 
         # print(l)
         if 'spreading' in pirate.getSignal()  and pirate.getTotalGunpowder() < 200:
              return gundpowder_spread(pirate)
-        elif 'guarding' not in pirate.getSignal(): pirate.setSignal(pirate.getSignal().split(",")[0] + ",")
+        elif 'guarding' not in pirate.getSignal(): 
+            # print(pirate.getSignal(),"- signal changed to -",pirate.getSignal().split(",")[0] + "," )
+            pirate.setSignal(pirate.getSignal().split(",")[0] + ",")
         
         if ('island1' in pirate.investigate_current()[0] and (l[0]!='myCapturing' or l[0]!='myCaptured')) or ('island2' in pirate.investigate_current()[0] and (l[1]!='myCapturing' or l[1]!='myCaptured')) or ('island3' in pirate.investigate_current()[0] and (l[2]!='myCapturing' or l[2]!='myCaptured')):
             #  print('Finding Reason why island is not getting captured')
@@ -395,6 +438,7 @@ def ActPirate(pirate):
              if pirate.getTotalGunpowder() <= 150 and 'guarding' not in pirate.getSignal():
                   if int(pirate.getID())%2 == 0:
                     #    print('Due to GUnpowder')
+                    #    print(pirate.getSignal(),"- signal changed to -",pirate.getSignal().split(",")[0] + "," )
                        pirate.setSignal(pirate.getSignal().split(",")[0] + "," + 'spreading')
                        return gundpowder_spread(pirate)
 
@@ -611,6 +655,8 @@ def ActPirate(pirate):
     else:
         
         # a= pirate.getID()
+        # if checkenemies(pirate) and pirate.getTotalGunpowder()<100:
+        #      return checkenemies(pirate)
         id = (int(pirate.getID())-1)
         a=id%pirate.getDimensionY()
         if a%40>40:
@@ -784,10 +830,12 @@ def ActPirate(pirate):
                 else:
                     if y_self == a and x_self == abs(width-a_spawn) and b_spawn == 0 :
                          counter+=1
+                        #  print(pirate.getSignal(),"- signal changed to -",pirate.getSignal().split(",")[0]+","+str(counter) )
                          pirate.setSignal(pirate.getSignal().split(",")[0]+","+str(counter))
                          return moveTo(abs(width-a_spawn)+1,a,pirate)
                     elif y_self == height - a and x_self == abs(width - a_spawn) and b_spawn == height:
                          counter+=1
+                        #  print(pirate.getSignal(),"- signal changed to -",pirate.getSignal().split(",")[0]+","+str(counter) )
                          pirate.setSignal(pirate.getSignal().split(",")[0]+","+str(counter))
                          return moveTo(abs(width-a_spawn)+1,a,pirate)
                          
@@ -811,10 +859,12 @@ def ActPirate(pirate):
                 else:
                     if y_self == a and x_self == a_spawn and b_spawn == 0:
                          counter+=1
+                        #  print(pirate.getSignal(),"- signal changed to -",pirate.getSignal().split(",")[0]+","+str(counter) )
                          pirate.setSignal(pirate.getSignal().split(",")[0]+","+str(counter))
                          return moveTo((a_spawn)-1,a,pirate)
                     elif y_self == height - a and x_self == a_spawn and b_spawn == height:
                          counter +=1
+                        #  print(pirate.getSignal(),"- signal changed to -",pirate.getSignal().split(",")[0]+","+str(counter) )
                          pirate.setSignal(pirate.getSignal().split(",")[0]+","+str(counter))
                          return moveTo((a_spawn)-1,a,pirate)
 
@@ -850,13 +900,13 @@ def ActTeam(team):
 
                         pirate_id = int(ele.split(',')[0])
                         if(pirate_id not in guarding_status[0] and pirate_id not in guarding_status[1] and pirate_id not in guarding_status[2]):
-                            team.setTeamSignal(team.getTeamSignal() + ',' + f'id:{pirate_id} island:{i + 1}')
+                            team.setTeamSignal(team.getTeamSignal() + ',' + f'i:{pirate_id} l:{i + 1}')
                             island_list.append(pirate_id)
                             if(len(island_list)==4):
                                 break
                         # print(team.getTeamSignal())
-    # print(li)
-    print(guarding_status)
+    print(team.getTeamSignal())
+    # print(guarding_status)
     if team.getCurrentFrame()>200:
 
         team.buildWalls(1)
