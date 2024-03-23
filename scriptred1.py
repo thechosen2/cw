@@ -9,6 +9,62 @@ name = 'def__init__'
 #DOWN = 1
 #LEFT = 4
 #RIGHT = 2
+def confrontation_avoidance(movetox, movetoy, pirate):
+        
+        # counter = int(pirate.getSignal().split(",")[1])
+        a_spawn,b_spawn = pirate.getDeployPoint()
+        width =pirate.getDimensionX()
+        height = pirate.getDimensionY()
+        x,y = pirate.getPosition()
+        up = pirate.investigate_up()[1]
+        down = pirate.investigate_down()[1]
+        left = pirate.investigate_left()[1]
+        right = pirate.investigate_right()[1]
+        ne = pirate.investigate_ne()[1]
+        nw = pirate.investigate_nw()[1]
+        se = pirate.investigate_se()[1]
+        sw = pirate.investigate_sw()[1]
+        if y!=movetoy or pirate.getTotalGunpowder()>=100:
+             return moveTo(movetox, movetoy, pirate)
+        else:
+             if movetox > x:
+                  if 'enemy' in ne and 'enemy' not in right and 'enemy' not in se:
+                       return moveTo(x+1, y+1, pirate)
+                  elif 'enemy' not in ne and 'enemy' in right and 'enemy' not in se:
+                       return moveTo(x+1, y, pirate)
+                  elif 'enemy' not in ne and 'enemy' not in right and 'enemy' in se:
+                       return moveTo(x+1, y-1, pirate)
+                  elif 'enemy' in ne and 'enemy' in right and 'enemy' not in se:
+                       return moveTo(x+1, y+1, pirate)
+                  elif 'enemy' not in ne and 'enemy' in right and 'enemy' in se:
+                       return moveTo(x+1, y-1, pirate)
+                  elif 'enemy' in ne and 'enemy' not in right and 'enemy' in se:
+                       return moveTo(x+1, y, pirate)
+                  elif 'enemy' in ne and 'enemy' in right and 'enemy' in se:
+                       return moveTo(x-1,y+1, pirate)
+                  else:
+                       return moveTo(movetox, movetoy, pirate)
+             else:
+                  if 'enemy' in ne and 'enemy' not in right and 'enemy' not in se:
+                       return moveTo(x-1, y+1, pirate)
+                  elif 'enemy' not in ne and 'enemy' in right and 'enemy' not in se:
+                       return moveTo(x-1, y, pirate)
+                  elif 'enemy' not in ne and 'enemy' not in right and 'enemy' in se:
+                       return moveTo(x-1, y-1, pirate)
+                  elif 'enemy' in ne and 'enemy' in right and 'enemy' not in se:
+                       return moveTo(x-1, y+1, pirate)
+                  elif 'enemy' not in ne and 'enemy' in right and 'enemy' in se:
+                       return moveTo(x-1, y-1, pirate)
+                  elif 'enemy' in ne and 'enemy' not in right and 'enemy' in se:
+                       return moveTo(x-1, y, pirate)
+                  elif 'enemy' in ne and 'enemy' in right and 'enemy' in se:
+                       return moveTo(x+1,y+1, pirate)
+                  else:
+                       return moveTo(movetox, movetoy, pirate)
+                  
+
+
+
 def nearest_island(pirate):
      x,y = pirate.getPosition()
      x1,y1,x2,y2,x3,y3 = (int(pirate.getTeamSignal().split(",")[0]),int(pirate.getTeamSignal().split(",")[1]),int(pirate.getTeamSignal().split(",")[2]),int(pirate.getTeamSignal().split(",")[3]),int(pirate.getTeamSignal().split(",")[4]),int(pirate.getTeamSignal().split(",")[5]))
@@ -820,7 +876,7 @@ def ActPirate(pirate):
         else:
             return spread(pirate)
     else:
-        
+        # after 200 frames
         # a= pirate.getID()
         # if checkenemies(pirate) and pirate.getTotalGunpowder()<100:
         #      return checkenemies(pirate)
@@ -839,24 +895,24 @@ def ActPirate(pirate):
             x_self, y_self = pirate.getPosition()
             if a_spawn == 0 and b_spawn == 0:
                 if y_self == a-1:
-                    return moveTo(width, y_self, pirate)
+                    return confrontation_avoidance(width, y_self, pirate)
                 else :
-                    return moveTo(x_self, a-1, pirate)
+                    return confrontation_avoidance(x_self, a-1, pirate)
             if a_spawn == width and b_spawn == 0:
                 if y_self == a-1:
-                    return moveTo(0, y_self, pirate)
+                    return confrontation_avoidance(0, y_self, pirate)
                 else :
-                    return moveTo(x_self, a-1, pirate)
+                    return confrontation_avoidance(x_self, a-1, pirate)
             if a_spawn == 0 and b_spawn == height:
                 if y_self == height-a-1:
-                    return moveTo(width, y_self, pirate)
+                    return confrontation_avoidance(width, y_self, pirate)
                 else :
-                    return moveTo(x_self, height-a-1, pirate)
+                    return confrontation_avoidance(x_self, height-a-1, pirate)
             if a_spawn == width and b_spawn == height:
                 if y_self == height-a-1:
-                    return moveTo(0, y_self, pirate)
+                    return confrontation_avoidance(0, y_self, pirate)
                 else :
-                    return moveTo(x_self, height-a-1, pirate)
+                    return confrontation_avoidance(x_self, height-a-1, pirate)
             return 0
         else:
             #  ('Reached here')
@@ -886,89 +942,89 @@ def ActPirate(pirate):
             if counter%2 == 0 and id<8:
                 if a_spawn == 0 and b_spawn == 0:
                     if y_self == a+counter and x_self != width:
-                        return moveTo(width, y_self, pirate)
+                        return confrontation_avoidance(width, y_self, pirate)
                     elif y_self != a+counter and x_self !=width :
-                        return moveTo(x_self, a+counter, pirate)
+                        return confrontation_avoidance(x_self, a+counter, pirate)
                 if a_spawn == width and b_spawn == 0:
                     if y_self == a+counter and x_self != 0:
-                        return moveTo(0, y_self, pirate)
+                        return confrontation_avoidance(0, y_self, pirate)
                     elif y_self != a+counter and x_self !=0 :
-                        return moveTo(x_self, a+counter,pirate)
+                        return confrontation_avoidance(x_self, a+counter,pirate)
                 if a_spawn == 0 and b_spawn == height:
                     if y_self == height-a+counter and x_self != width:
-                        return moveTo(width, y_self, pirate)
+                        return confrontation_avoidance(width, y_self, pirate)
                     elif y_self != height-a+counter and x_self !=width :
-                        return moveTo(x_self, height-a+counter, pirate)
+                        return confrontation_avoidance(x_self, height-a+counter, pirate)
                 if a_spawn == width and b_spawn == height:
                     if y_self == height-a+counter and x_self != 0:
-                        return moveTo(0, y_self, pirate)
+                        return confrontation_avoidance(0, y_self, pirate)
                     elif y_self != height-a+counter and x_self !=0:
-                        return moveTo(x_self, height-a+counter, pirate)
+                        return confrontation_avoidance(x_self, height-a+counter, pirate)
                     
             elif counter%2!=0 and id<8:
                 if a_spawn == 0 and b_spawn == 0:
                     if y_self == a+counter and x_self != 0:
-                        return moveTo(0, y_self, pirate)
+                        return confrontation_avoidance(0, y_self, pirate)
                     elif y_self != a+counter and x_self !=0 :
-                        return moveTo(x_self, a+counter, pirate)
+                        return confrontation_avoidance(x_self, a+counter, pirate)
                 if a_spawn == width and b_spawn == 0:
                     if y_self == a+counter and x_self != width:
-                        return moveTo(width, y_self, pirate)
+                        return confrontation_avoidance(width, y_self, pirate)
                     elif y_self != a+counter and x_self !=width :
-                        return moveTo(x_self, a+counter,pirate)
+                        return confrontation_avoidance(x_self, a+counter,pirate)
                 if a_spawn == 0 and b_spawn == height:
                     if y_self == height-a+counter and x_self != 0:
-                        return moveTo(0, y_self, pirate)
+                        return confrontation_avoidance(0, y_self, pirate)
                     elif y_self != height-a+counter and x_self !=0 :
-                        return moveTo(x_self, height-a+counter, pirate)
+                        return confrontation_avoidance(x_self, height-a+counter, pirate)
                 if a_spawn == width and b_spawn == height:
                     if y_self == height-a+counter and x_self != width:
-                        return moveTo(width, y_self, pirate)
+                        return confrontation_avoidance(width, y_self, pirate)
                     elif y_self != height-a+counter and x_self !=width:
-                        return moveTo(x_self, height-a+counter, pirate)
+                        return confrontation_avoidance(x_self, height-a+counter, pirate)
             
             elif counter%2 == 0 and id>=8:
                 if a_spawn == 0 and b_spawn == 0:
                     if y_self == a and x_self != width:
-                        return moveTo(width, y_self, pirate)
+                        return confrontation_avoidance(width, y_self, pirate)
                     elif y_self != a and x_self !=width :
-                        return moveTo(x_self, a, pirate)
+                        return confrontation_avoidance(x_self, a, pirate)
                 if a_spawn == width and b_spawn == 0:
                     if y_self == a and x_self != 0:
-                        return moveTo(0, y_self, pirate)
+                        return confrontation_avoidance(0, y_self, pirate)
                     elif y_self != a and x_self !=0 :
-                        return moveTo(x_self, a,pirate)
+                        return confrontation_avoidance(x_self, a,pirate)
                 if a_spawn == 0 and b_spawn == height:
                     if y_self == height-a and x_self != width:
-                        return moveTo(width, y_self, pirate)
+                        return confrontation_avoidance(width, y_self, pirate)
                     elif y_self != height-a and x_self !=width :
-                        return moveTo(x_self, height-a, pirate)
+                        return confrontation_avoidance(x_self, height-a, pirate)
                 if a_spawn == width and b_spawn == height:
                     if y_self == height-a and x_self != 0:
-                        return moveTo(0, y_self, pirate)
+                        return confrontation_avoidance(0, y_self, pirate)
                     elif y_self != height-a and x_self !=0:
-                        return moveTo(x_self, height-a, pirate)
+                        return confrontation_avoidance(x_self, height-a, pirate)
             elif counter%2 != 0 and id>=8:
                 if a_spawn == 0 and b_spawn == 0:
                     if y_self == a and x_self != 0:
-                        return moveTo(0, y_self, pirate)
+                        return confrontation_avoidance(0, y_self, pirate)
                     elif y_self != a and x_self !=0 :
-                        return moveTo(x_self, a, pirate)
+                        return confrontation_avoidance(x_self, a, pirate)
                 if a_spawn == width and b_spawn == 0:
                     if y_self == a and x_self != width:
-                        return moveTo(width, y_self, pirate)
+                        return confrontation_avoidance(width, y_self, pirate)
                     elif y_self != a and x_self !=width :
-                        return moveTo(x_self, a,pirate)
+                        return confrontation_avoidance(x_self, a,pirate)
                 if a_spawn == 0 and b_spawn == height:
                     if y_self == height-a and x_self != 0:
-                        return moveTo(0, y_self, pirate)
+                        return confrontation_avoidance(0, y_self, pirate)
                     elif y_self != height-a and x_self !=0 :
-                        return moveTo(x_self, height-a, pirate)
+                        return confrontation_avoidance(x_self, height-a, pirate)
                 if a_spawn == width and b_spawn == height:
                     if y_self == height-a and x_self != width:
-                        return moveTo(width, y_self, pirate)
+                        return confrontation_avoidance(width, y_self, pirate)
                     elif y_self != height-a and x_self !=width:
-                        return moveTo(x_self, height-a, pirate)
+                        return confrontation_avoidance(x_self, height-a, pirate)
 
                 
             #Check if one route is over
@@ -999,12 +1055,12 @@ def ActPirate(pirate):
                          counter+=1
                         #   (pirate.getSignal(),"- signal changed to -",pirate.getSignal().split(",")[0]+","+str(counter) )
                          pirate.setSignal(pirate.getSignal().split(",")[0]+","+str(counter))
-                         return moveTo(abs(width-a_spawn)+1,a,pirate)
+                         return confrontation_avoidance(abs(width-a_spawn)+1,a,pirate)
                     elif y_self == height - a and x_self == abs(width - a_spawn) and b_spawn == height:
                          counter+=1
                         #   (pirate.getSignal(),"- signal changed to -",pirate.getSignal().split(",")[0]+","+str(counter) )
                          pirate.setSignal(pirate.getSignal().split(",")[0]+","+str(counter))
-                         return moveTo(abs(width-a_spawn)+1,a,pirate)
+                         return confrontation_avoidance(abs(width-a_spawn)+1,a,pirate)
                          
             else:
                 #  ('Odd')
@@ -1028,12 +1084,12 @@ def ActPirate(pirate):
                          counter+=1
                         #   (pirate.getSignal(),"- signal changed to -",pirate.getSignal().split(",")[0]+","+str(counter) )
                          pirate.setSignal(pirate.getSignal().split(",")[0]+","+str(counter))
-                         return moveTo((a_spawn)-1,a,pirate)
+                         return confrontation_avoidance((a_spawn)-1,a,pirate)
                     elif y_self == height - a and x_self == a_spawn and b_spawn == height:
                          counter +=1
                         #   (pirate.getSignal(),"- signal changed to -",pirate.getSignal().split(",")[0]+","+str(counter) )
                          pirate.setSignal(pirate.getSignal().split(",")[0]+","+str(counter))
-                         return moveTo((a_spawn)-1,a,pirate)
+                         return confrontation_avoidance((a_spawn)-1,a,pirate)
 
                            
 
