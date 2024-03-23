@@ -88,7 +88,7 @@ def moveAway(x, y, Pirate):
     else:
         return (position[1] > y) * 2 + 1
 
-def circleAround(x, y, radius, Pirate, initial="abc", clockwise=True):
+def circleAround(x, y, radius, Pirate, clockwise=True):
     position = Pirate.getPosition()
     rx = position[0]
     ry = position[1]
@@ -97,8 +97,6 @@ def circleAround(x, y, radius, Pirate, initial="abc", clockwise=True):
     pos.extend([[x + i, y - radius] for i in range(radius - 1, -1 * radius - 1, -1)])
     pos.extend([[x - radius, y + i] for i in range(-1 * radius + 1, radius)])
     if [rx, ry] not in pos:
-        if initial != "abc":
-            return moveTo(initial[0], initial[1], Pirate)
         if rx in [x + i for i in range(-1 * radius, radius + 1)] and ry in [
             y + i for i in range(-1 * radius, radius + 1)
         ]:
@@ -110,7 +108,7 @@ def circleAround(x, y, radius, Pirate, initial="abc", clockwise=True):
         return moveTo(
             pos[(index + (clockwise * 2) - 1) % len(pos)][0],
             pos[(index + (clockwise * 2) - 1) % len(pos)][1],
-            Pirate,
+            Pirate
         )
 
 def getIslandCenter(pirate):

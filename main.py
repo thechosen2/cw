@@ -6,7 +6,7 @@ import sample1
 import script
 import oldus
 if __name__ == "__main__":
-    for i in range (20):
+    for i in range (1):
         try:
             G = Game((40, 40), scriptred1, oldus)
             G.run_game() 
