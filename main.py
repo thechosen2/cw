@@ -8,7 +8,7 @@ import oldus
 import oldnewus
 # import V2
 if __name__ == "__main__":
-    for i in range (1):
+    for i in range (20):
         try:
             G = Game((40, 40), scriptred1, oldnewus)
             G.run_game() 

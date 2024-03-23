@@ -189,7 +189,7 @@ def moveToNearest(pirate, li):
           if abs(x-li[i][0]) + abs(y-li[i][1]) < mdis:
                mdis = abs(x-li[i][0]) + abs(y-li[i][1])
                m_index = i
-     return moveTo(li[m_index][0], li[m_index][1], pirate)
+     return confrontation_avoidance(li[m_index][0], li[m_index][1], pirate)
           
 def circleAround(x, y, radius, Pirate, initial="abc", clockwise=True):
     x=x+1
@@ -205,7 +205,7 @@ def circleAround(x, y, radius, Pirate, initial="abc", clockwise=True):
     # if(radius == 19):print(pos)
     if [rx, ry] not in pos:
         if initial != "abc":
-            return moveTo(initial[0], initial[1], Pirate)
+            return confrontation_avoidance(initial[0], initial[1], Pirate)
         if rx in [x + i for i in range(-1 * radius, radius + 1)] and ry in [
             y + i for i in range(-1 * radius, radius + 1)
         ]:
@@ -214,7 +214,7 @@ def circleAround(x, y, radius, Pirate, initial="abc", clockwise=True):
             return moveToNearest(Pirate, pos)
     else:
         index = pos.index([rx, ry])
-        return moveTo(
+        return confrontation_avoidance(
             pos[(index + (clockwise * 2) - 1) % len(pos)][0],
             pos[(index + (clockwise * 2) - 1) % len(pos)][1],
             Pirate,
@@ -631,11 +631,18 @@ def ActPirate(pirate):
             #  print(pirate.getSignal(),"- signal changed to -",pirate.getSignal().split(",")[0] + "," )
              pirate.setSignal(pirate.getSignal().split(",")[0] + ",")
         
-        if (('island1' in pirate.investigate_current()[0] or 'island1' in pirate.investigate_up()[0] or 'island1' in pirate.investigate_down()[0] or 'island1' in pirate.investigate_left()[0] or 'island1' in pirate.investigate_right()[0]) and (l[0]!='myCapturing' or l[0]!='myCaptured')) or (('island2' in pirate.investigate_current()[0] or 'island2' in pirate.investigate_up()[0] or 'island2' in pirate.investigate_down()[0] or 'island2' in pirate.investigate_left()[0] or 'island1' in pirate.investigate_right()[0]) and (l[1]!='myCapturing' or l[1]!='myCaptured')) or (('island3' in pirate.investigate_current()[0] or 'island3' in pirate.investigate_up()[0] or 'island3' in pirate.investigate_down()[0] or 'island3' in pirate.investigate_left()[0] or 'island3' in pirate.investigate_right()[0]) and (l[2]!='myCapturing' or l[2]!='myCaptured')):
+        if ('island1' in pirate.investigate_current()[0] ) or (('island2' in pirate.investigate_current()[0] ) and (l[1]!='myCapturing' or l[1]!='myCaptured')) or (('island3' in pirate.investigate_current()[0] ) and (l[2]!='myCapturing' or l[2]!='myCaptured')):
             #   ('Finding Reason why island is not getting captured')
             #   (f'Total Gunpowder= {pirate.getTotalGunpowder()}')
              if pirate.getTotalGunpowder() <= 150 and 'guarding' not in pirate.getSignal() and 'conquering' not in pirate.getSignal():
                   if int(pirate.getID())%2 == 0:
+                    #     ('Due to GUnpowder')
+                    #     (pirate.getSignal(),"- signal changed to -",pirate.getSignal().split(",")[0] + "," )
+                    #    pirate.setSignal(pirate.getSignal().split(",")[0] + "," + 'spreading')
+                       return gundpowder_spread(pirate)
+        if (('island1' in pirate.investigate_up()[0] or 'island1' in pirate.investigate_up()[0] or 'island1' in pirate.investigate_down()[0] or 'island1' in pirate.investigate_left()[0] or 'island1' in pirate.investigate_right()[0]) and (l[0]!='myCapturing' or l[0]!='myCaptured')) or (('island2' in pirate.investigate_up()[0] or 'island2' in pirate.investigate_up()[0] or 'island2' in pirate.investigate_down()[0] or 'island2' in pirate.investigate_left()[0] or 'island2' in pirate.investigate_right()[0]) and (l[1]!='myCapturing' or l[1]!='myCaptured')) or (('island3' in pirate.investigate_up()[0] or 'island3' in pirate.investigate_up()[0] or 'island3' in pirate.investigate_down()[0] or 'island3' in pirate.investigate_left()[0] or 'island3' in pirate.investigate_right()[0]) and (l[2]!='myCapturing' or l[2]!='myCaptured')):
+             if pirate.getTotalGunpowder() <= 150 and 'guarding' not in pirate.getSignal() and 'conquering' not in pirate.getSignal():
+                  if int(pirate.getID())%3 != 2:
                     #     ('Due to GUnpowder')
                     #     (pirate.getSignal(),"- signal changed to -",pirate.getSignal().split(",")[0] + "," )
                     #    pirate.setSignal(pirate.getSignal().split(",")[0] + "," + 'spreading')
