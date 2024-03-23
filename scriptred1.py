@@ -37,6 +37,43 @@ def gundpowder_spread(pirate):
      width = pirate.getDimensionX() - 1
 
      id = int(pirate.getID())
+     l=pirate.trackPlayers()
+     current = pirate.investigate_current()[0]
+
+     if 'island' in current:
+          island_id = int(current[-1])
+          if l[island_id + 2] == 'oppCaptured' or l[island_id + 2] == 'oppCapturing':
+               return[0]
+    #  if "island" in up and not 'island' in current:
+    #       island_ID=int(up[-1])
+    #       if l[island_ID-1]=='':
+    #           pirate.setSignal(pirate.getSignal() + ';;Ilf' + str(island_ID))
+    #           return moveTo(x_self,y_self-1,pirate)
+    #  if "island" in down :
+    #       island_ID=int(down[-1])
+    #       if l[island_ID-1]=='':
+    #           pirate.setSignal(pirate.getSignal() + ';;Ilf'+ str(island_ID))
+    #           return moveTo(x_self,y_self+1,pirate)
+    #  if "island" in right :
+    #       island_ID=int(right[-1])
+    #       if l[island_ID-1]=='':
+    #          pirate.setSignal(pirate.getSignal() + ';;Ilf'+ str(island_ID))
+    #          return moveTo(x_self+1,y_self,pirate)
+    #  if "island" in left :
+    #       island_ID=int(left[-1])
+    #       if l[island_ID-1]=='':
+    #          pirate.setSignal(pirate.getSignal() + ';;Ilf'+ str(island_ID))
+    #          return moveTo(x_self-1,y_self,pirate)
+          
+               
+
+    #  if 'Ilf' in pirate.getSignal():
+    #       island_id = int(pirate.getSignal()[-1])
+    #       if l[island_id - 1] != 'myCaptured':
+    #         return 0
+    #       else:
+    #            pirate.setSignal(pirate.getSignal.split(';;')[0])
+    
     #  print(f'GUnpowder SPreading CAlled WIth COunter: {counter} FOr ID: {id} ANd SIgnal SPreading:{sig_spreading}')
      if counter % 2 == 0:
          if y_self == (id + counter)%40 and x_self == 0:
@@ -407,6 +444,7 @@ def checkenemies(pirate):
     return moveTo(x+movex, y+movey, pirate)
          
 def setconquering(pirate, island_num):
+     return
      sig = pirate.getSignal()
      t = sig.split(",")
      id = t[0]
