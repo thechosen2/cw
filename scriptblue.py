@@ -19,6 +19,7 @@ def moveTo(x, y, Pirate):
 
 
 def ActPirate(pirate):
+    
     up = pirate.investigate_up()[0]
     down = pirate.investigate_down()[0]
     left = pirate.investigate_left()[0]

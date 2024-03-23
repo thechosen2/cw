@@ -29,9 +29,9 @@ def gundpowder_spread(pirate):
      sig_spreading = sig.split(',')[1]
      try:
          counter = int(sig_spreading.split(';')[-1])
-         print(f'COunter: {counter}')
+        #  print(f'COunter: {counter}')
      except:
-          print('FAiling TRY ALways')
+        #   print('FAiling TRY ALways')
           counter = 0
      x_self , y_self = pirate.getPosition()
      width = pirate.getDimensionX() - 1
@@ -41,7 +41,7 @@ def gundpowder_spread(pirate):
      if counter % 2 == 0:
          if y_self == (id + counter)%40 and x_self == 0:
               counter += 1
-              print('Changing signal')
+            #   print('Changing signal')
 
               pirate.setSignal(sig.split(",")[0] + ',' + 'spreading;' + str(counter))
               return moveTo(x_self,y_self + 1,pirate)
@@ -50,7 +50,7 @@ def gundpowder_spread(pirate):
      else:
           if y_self == (id + counter)%40 and x_self == width:
               counter += 1
-              print('Changing signal')
+            #   print('Changing signal')
               pirate.setSignal(sig.split(",")[0] + ',' + 'spreading;' + str(counter))
               return moveTo(x_self,y_self + 1,pirate)
           else:
@@ -58,17 +58,17 @@ def gundpowder_spread(pirate):
 
      if counter % 2 == 0:
           if y_self == (id + counter)%40 and x_self !=0:
-               print(f'MOving TO 0,{y_self}')
+            #    print(f'MOving TO 0,{y_self}')
                return moveTo(0,y_self,pirate)
           elif y_self != (id + counter)%40:
-               print(f'MOving TO {x_self},{(id + counter)%40}')
+            #    print(f'MOving TO {x_self},{(id + counter)%40}')
                return moveTo(x_self,(id + counter)%40,pirate)
      else:
           if y_self == (id + counter)%40 and x_self !=width:
-               print(f'MOving TO {width},{(id + counter)%40}')
+            #    print(f'MOving TO {width},{(id + counter)%40}')
                return moveTo(width,y_self,pirate)
           elif y_self != (id + counter)%40:
-               print(f'MOving TO {x_self},{(id + counter)%40}')
+            #    print(f'MOving TO {x_self},{(id + counter)%40}')
                return moveTo(x_self,id + counter,pirate)
           
     
@@ -87,29 +87,81 @@ def moveAway(x, y, Pirate):
         return (position[0] < x) * 2 + 2
     else:
         return (position[1] > y) * 2 + 1
-
-def circleAround(x, y, radius, Pirate, clockwise=True):
+    
+def moveToNearest(pirate, li):
+     x,y = pirate.getPosition()
+     mdis = abs(x-li[0][0]) + abs(y-li[0][1])
+     m_index = 0
+     for i in range(len(li)):
+          if abs(x-li[i][0]) + abs(y-li[i][1]) < mdis:
+               mdis = abs(x-li[i][0]) + abs(y-li[i][1])
+               m_index = i
+     return moveTo(li[m_index][0], li[m_index][1], pirate)
+          
+def circleAround(x, y, radius, Pirate, initial="abc", clockwise=True):
+    x=x+1
+    y=y+1
     position = Pirate.getPosition()
     rx = position[0]
     ry = position[1]
-    pos = [[x + i, y + radius] for i in range(-1 * radius, radius + 1)]
-    pos.extend([[x + radius, y + i] for i in range(radius - 1, -1 * radius - 1, -1)])
-    pos.extend([[x + i, y - radius] for i in range(radius - 1, -1 * radius - 1, -1)])
-    pos.extend([[x - radius, y + i] for i in range(-1 * radius + 1, radius)])
+    # if Pirate.getDeployPoint()[0] != 0:
+    pos = [[x + i, y + radius] for i in range(-1 * radius - 1 , radius + 1)]
+    pos.extend([[x + radius, y + i] for i in range(radius - 1, -1 * radius - 2, -1)])
+    pos.extend([[x + i, y - radius - 1] for i in range(radius - 1, -1 * radius - 2, -1)])
+    pos.extend([[x - radius - 1, y + i - 1] for i in range(-1 * radius +1, radius+1)])
+    # if(radius == 19):print(pos)
     if [rx, ry] not in pos:
+        if initial != "abc":
+            return moveTo(initial[0], initial[1], Pirate)
         if rx in [x + i for i in range(-1 * radius, radius + 1)] and ry in [
             y + i for i in range(-1 * radius, radius + 1)
         ]:
-            return moveAway(x, y, Pirate)
+            return moveToNearest(Pirate, pos)
         else:
-            return moveTo(x, y, Pirate)
+            return moveToNearest(Pirate, pos)
     else:
         index = pos.index([rx, ry])
         return moveTo(
             pos[(index + (clockwise * 2) - 1) % len(pos)][0],
             pos[(index + (clockwise * 2) - 1) % len(pos)][1],
-            Pirate
-        )
+            Pirate,
+        )          
+
+# def circleAround(x, y, radius, Pirate, clockwise=True):
+#     position = Pirate.getPosition()
+#     rx = position[0]
+#     ry = position[1]
+#     # print(radius)
+
+#     pos = [[x + i, y + radius] for i in range(-1 * radius, radius + 2)]
+#     pos.extend([[x + radius, y + i] for i in range(radius - 1, -1 * radius - 1, -1)])
+#     pos.extend([[x + i, y - radius] for i in range(radius, -1 * radius - 1, -1)])
+#     pos.extend([[x - radius, y + i] for i in range(-1 * radius + 1, radius)])
+
+#     # rpos = []
+#     # l = 2*radius-1 
+#     # for i in range(4*l):
+#     #      if i < 2*radius-1:
+#     #           rpos.append([x - radius + i ,y - radius ])
+#     #      elif i < 4*radius-2:
+#     #           rpos.append([x + radius - 1, y - radius + i % l])
+#     #      elif i < 6*radius-3:
+#     #           rpos.append([x + radius - 1 - i % l, y + radius - 1])
+#     #      else:
+#     #           rpos.append([x + radius - 1, y + radius - 1 - i % l])
+#     # print(rpos)
+               
+#     if [rx, ry] not in pos:
+#         print(f'not on path for radius = {radius}, moving to nearest')
+#         return moveToNearest(Pirate, pos)
+#     else:
+#         index = pos.index([rx, ry])
+#         print(f'on correct path for radius = {radius}, moving to next cell')
+#         return moveTo(
+#             pos[(index + (1)) % len(pos)][0],
+#             pos[(index + (1)) % len(pos)][1],
+#             Pirate,
+#         )
 
 def getIslandCenter(pirate):
    
