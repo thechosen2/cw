@@ -631,7 +631,7 @@ def ActPirate(pirate):
             #  print(pirate.getSignal(),"- signal changed to -",pirate.getSignal().split(",")[0] + "," )
              pirate.setSignal(pirate.getSignal().split(",")[0] + ",")
         
-        if (('island1' in pirate.investigate_current()[0] or 'island1' in pirate.investigate_up()[0] or 'island1' in pirate.investigate_down()[0] or 'island1' in pirate.investigate_left()[0] or 'island1' in pirate.investigate_right()[0]) and (l[0]!='myCapturing' or l[0]!='myCaptured')) or (('island2' in pirate.investigate_current()[0] or 'island2' in pirate.investigate_up()[0] or 'island2' in pirate.investigate_down()[0] or 'island2' in pirate.investigate_left()[0] or 'island1' in pirate.investigate_right()[0]) and (l[1]!='myCapturing' or l[1]!='myCaptured')) or (('island3' in pirate.investigate_current()[0] or 'island3' in pirate.investigate_up()[0] or 'island3' in pirate.investigate_down()[0] or 'island3' in pirate.investigate_left()[0] or 'island3' in pirate.investigate_right()[0]) and (l[2]!='myCapturing' or l[2]!='myCaptured')):
+        if ('island1' in pirate.investigate_current()[0] and (l[0]!='myCapturing' or l[0]!='myCaptured')) or ('island2' in pirate.investigate_current()[0] and (l[1]!='myCapturing' or l[1]!='myCaptured')) or ('island3' in pirate.investigate_current()[0] and (l[2]!='myCapturing' or l[2]!='myCaptured')):
             #   ('Finding Reason why island is not getting captured')
             #   (f'Total Gunpowder= {pirate.getTotalGunpowder()}')
              if pirate.getTotalGunpowder() <= 150 and 'guarding' not in pirate.getSignal() and 'conquering' not in pirate.getSignal():

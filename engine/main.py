@@ -29,7 +29,7 @@ class Game:
         self.__sea = Group()
         self.__dim = dim
         self.__frame = 0
-        self.rate = 6000
+        self.rate = 30
         self.explosion = pygame.image.load("images/explode.png")
         self.purple_pirate = pygame.image.load("images/piratepurple.png")
         self.screen = pygame.display.set_mode(
@@ -129,7 +129,7 @@ class Game:
                 y = random.randint(self.__dim[1] // 2 + 4, self.__dim[1] - 4)
                 l.append((x, y))
         return l + [base_red, base_blue]
-
+#!!!!!!!!
     def create_map(self):
         """Take info about __collectibles and create the map"""
         im = np.zeros((self.__dim))
