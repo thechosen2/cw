@@ -406,7 +406,17 @@ def checkenemies(pirate):
     if(sw == 'enemy'): movex, movey = (+1,-1)
     return moveTo(x+movex, y+movey, pirate)
          
-
+def setconquering(pirate, island_num):
+     sig = pirate.getSignal()
+     t = sig.split(",")
+     id = t[0]
+     newsignal = ""
+     for i in len(t):
+          if(i!=1):
+               newsignal+=t[i]+","
+          else:
+               newsignal+="conquering"+str(island_num)
+     pirate.setSignal(newsignal)
 
 def spread(pirate):
     x,y = pirate.getPosition()
@@ -530,7 +540,7 @@ def ActPirate(pirate):
         if ('island1' in pirate.investigate_current()[0] and (l[0]!='myCapturing' or l[0]!='myCaptured')) or ('island2' in pirate.investigate_current()[0] and (l[1]!='myCapturing' or l[1]!='myCaptured')) or ('island3' in pirate.investigate_current()[0] and (l[2]!='myCapturing' or l[2]!='myCaptured')):
             #   ('Finding Reason why island is not getting captured')
             #   (f'Total Gunpowder= {pirate.getTotalGunpowder()}')
-             if pirate.getTotalGunpowder() <= 150 and 'guarding' not in pirate.getSignal():
+             if pirate.getTotalGunpowder() <= 150 and 'guarding' not in pirate.getSignal() and 'conquering' not in pirate.getSignal():
                   if int(pirate.getID())%2 == 0:
                     #     ('Due to GUnpowder')
                     #     (pirate.getSignal(),"- signal changed to -",pirate.getSignal().split(",")[0] + "," )
@@ -549,7 +559,7 @@ def ActPirate(pirate):
                 innerMappingList = [7,12,17,18,19,14,9,8]
                 id = int(pirate.getID())
                 nearest_island_index = nearest_island(pirate)-1
-                
+                setconquering(pirate,nearest_island_index+1)
                 if((id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()>2000) or  (l[nearest_island_index+3]=='oppCapturing' or l[nearest_island_index+3]=='oppCaptured') :
                      movex, movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
                 elif (id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()<2000:
@@ -576,6 +586,7 @@ def ActPirate(pirate):
                 innerMappingList = [7,12,17,18,19,14,9,8]
                 id = int(pirate.getID())
                 nearest_island_index = nearest_island(pirate)-1
+                setconquering(pirate,nearest_island_index+1)
                 
                 if((id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()>2000) or  (l[nearest_island_index+3]=='oppCapturing' or l[nearest_island_index+3]=='oppCaptured') :
                      movex, movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
@@ -603,6 +614,7 @@ def ActPirate(pirate):
                 innerMappingList = [7,12,17,18,19,14,9,8]
                 id = int(pirate.getID())
                 nearest_island_index = nearest_island(pirate)-1
+                setconquering(pirate,nearest_island_index+1)
                 
                 if((id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()>2000) or  (l[nearest_island_index+3]=='oppCapturing' or l[nearest_island_index+3]=='oppCaptured') :
                      movex, movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
@@ -632,6 +644,7 @@ def ActPirate(pirate):
                 innerMappingList = [7,12,17,18,19,14,9,8]
                 id = int(pirate.getID())
                 nearest_island_index = nearest_island(pirate)-1
+                setconquering(pirate,nearest_island_index+1)
                 
                 if((id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()>2000) or  (l[nearest_island_index+3]=='oppCapturing' or l[nearest_island_index+3]=='oppCaptured') :
                      movex, movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
@@ -667,6 +680,7 @@ def ActPirate(pirate):
                 innerMappingList = [7,12,17,18,19,14,9,8]
                 id = int(pirate.getID())
                 nearest_island_index = nearest_island(pirate)-1
+                setconquering(pirate,nearest_island_index+1)
                 
                 if((id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()>2000) or  (l[nearest_island_index+3]=='oppCapturing' or l[nearest_island_index+3]=='oppCaptured') :
                      movex, movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
@@ -702,6 +716,7 @@ def ActPirate(pirate):
                 innerMappingList = [7,12,17,18,19,14,9,8]
                 id = int(pirate.getID())
                 nearest_island_index = nearest_island(pirate)-1
+                setconquering(pirate,nearest_island_index+1)
                 
                 if((id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()>2000) or  (l[nearest_island_index+3]=='oppCapturing' or l[nearest_island_index+3]=='oppCaptured') :
                      movex, movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
@@ -739,6 +754,7 @@ def ActPirate(pirate):
                 innerMappingList = [7,12,17,18,19,14,9,8]
                 id = int(pirate.getID())
                 nearest_island_index = nearest_island(pirate)-1
+                setconquering(pirate,nearest_island_index+1)
                 
                 if((id-1)%25+1  in outerMappingList and pirate.getCurrentFrame()>2000) or  (l[nearest_island_index+3]=='oppCapturing' or l[nearest_island_index+3]=='oppCaptured') :
                      movex, movey = coord_list[innerMappingList[(pirate.getCurrentFrame()+id)%8]-1]
